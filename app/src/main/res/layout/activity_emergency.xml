@@ -12,53 +12,88 @@
     android:layout_rowWeight="5"
     tools:context="com.example.user.jolp_v0.Emergency">
 
-    <ImageButton
+    <Button
         android:id="@+id/emstep1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="292dp"
+        android:layout_height="69dp"
+        android:background="@drawable/em_step1"
         android:paddingTop="10dp"
         android:scaleType="centerInside"
-        android:backgroundTint="#00000000"
-        app:srcCompat="@drawable/em_step1" />
+        android:layout_gravity="center"
+        android:paddingLeft="126dp"
+        android:paddingBottom="9dp"
+        android:textSize="30dp"
+        android:layout_marginBottom="17dp"
+        android:text="0" />
 
-    <ImageButton
+
+    <Button
         android:id="@+id/emstep2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="292dp"
+        android:layout_height="69dp"
+        android:background="@drawable/em_step2"
         android:paddingTop="10dp"
         android:scaleType="centerInside"
-        android:backgroundTint="#00000000"
-        app:srcCompat="@drawable/em_step2" />
+        android:layout_gravity="center"
+        android:paddingLeft="126dp"
+        android:paddingBottom="9dp"
+        android:textSize="30dp"
+        android:layout_marginBottom="17dp"
+        android:text="0" />
 
-    <ImageButton
+    <!--<view-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="15dp"-->
+        <!--/>-->
+
+    <Button
         android:id="@+id/emstep3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="292dp"
+        android:layout_height="69dp"
+        android:background="@drawable/em_step3"
         android:paddingTop="10dp"
         android:scaleType="centerInside"
-        android:backgroundTint="#00000000"
-        app:srcCompat="@drawable/em_step3" />
+        android:layout_gravity="center"
+        android:paddingLeft="126dp"
+        android:paddingBottom="9dp"
+        android:textSize="30dp"
+        android:layout_marginBottom="17dp"
+        android:text="0" />
 
-    <ImageButton
+    <!--<view-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="15dp"-->
+        <!--/>-->
+
+    <Button
         android:id="@+id/emstep4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="292dp"
+        android:layout_height="69dp"
+        android:background="@drawable/em_step4"
         android:paddingTop="10dp"
         android:scaleType="centerInside"
-        android:backgroundTint="#00000000"
-        app:srcCompat="@drawable/em_step4" />
+        android:layout_gravity="center"
+        android:paddingLeft="126dp"
+        android:paddingBottom="9dp"
+        android:textSize="30dp"
+        android:layout_marginBottom="17dp"
+        android:text="0" />
 
-    <ImageButton
+    <!--<view-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="15dp"-->
+        <!--/>-->
+
+    <Button
         android:id="@+id/emstep5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="292dp"
+        android:layout_height="69dp"
+        android:background="@drawable/em_step5"
         android:paddingTop="10dp"
         android:scaleType="centerInside"
-        android:backgroundTint="#00000000"
-        app:srcCompat="@drawable/em_step5" />
+        android:layout_gravity="center"
+        android:paddingLeft="126dp"
+        android:paddingBottom="9dp"
+        android:textSize="30dp"
+        android:text="0" />
 </LinearLayout>

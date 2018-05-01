@@ -34,11 +34,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".Join" />
-        <activity android:name=".History" />
         <activity android:name=".Menur" />
         <activity android:name=".Statistics" />
         <activity android:name=".Emergency" />
-        <activity android:name=".Step"></activity>
+        <activity android:name=".Step" />
+        <activity android:name=".Emergency_History"></activity>
     </application>
 
 </manifest>

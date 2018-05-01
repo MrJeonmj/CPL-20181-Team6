@@ -72,10 +72,7 @@ public class Join extends FragmentActivity {
 
         });
 
-        final RadioGroup rg = (RadioGroup)findViewById(R.id.btn_is_patient);
-        int id = rg.getCheckedRadioButtonId();
-        //RadioButton rb = (RadioButton) findViewById(id);
-        epatient = Integer.toString(id);
+
 
 
 
@@ -91,6 +88,17 @@ public class Join extends FragmentActivity {
                 String contact = econtact.getText().toString();
                 String address = eaddress.getText().toString();
                 String birth = ebirth.getText().toString();
+
+                final RadioGroup rg = (RadioGroup)findViewById(R.id.btn_is_patient);
+                int radio_id = rg.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton) findViewById(radio_id);
+                if(rb.getText().equals("환자")){
+                    epatient = Integer.toString(1);
+                }
+                else{
+                    epatient = Integer.toString(0);
+                }
+
 
 
 

@@ -6,12 +6,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,52 +22,33 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class History extends AppCompatActivity {
-
-    private static String TAG = "phptest_MainActivity";
-
+public class Emergency_History extends AppCompatActivity {
+    private static String TAG = "phptest";
     private static final String TAG_JSON="webnautes";
-    private static final String TAG_BID = "bid";
-    private static final String TAG_DATE = "date";
-    private static final String TAG_USTART = "ustart";
-    private static final String TAG_UEND ="uend";
-    private static final String TAG_UTIME = "utime";
-    private static final String TAG_CHARGE = "charge";
+    private static final String TAG_ID="ID";
+    private static final String TAG_DATE="DATE";
+    private static final String TAG_STEP="STEP";
 
-    private TextView mTextViewResult;
     ArrayList<HashMap<String, String>> mArrayList;
-    ListView mlistView;
     String mJsonString;
+    ListView mlistView;
     String id;
-    private Button bt_close;
-
+    int step;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_emergency__history);
 
         Intent intent = getIntent();
         id = (String) intent.getStringExtra("id");
+        step = getIntent().getIntExtra("step",1);
 
-        //mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
         mlistView = (ListView) findViewById(R.id.listView_main_list);
         mArrayList = new ArrayList<>();
 
         GetData task = new GetData();
-        task.execute("http://13.124.241.9/history.php?ID="+id);
-
-        /*bt_close = (Button) findViewById(R.id.button_main_back);
-        bt_close.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        finish();
-                    }
-                }
-        );
-        */
-
+        task.execute("http://show8258.ipdisk.co.kr:8000/emergencylist.php?ID="+id+"&STEP="+step);
     }
-
 
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -80,7 +58,7 @@ public class History extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(History.this,
+            progressDialog = ProgressDialog.show(Emergency_History.this,
                     "Please Wait", null, true, true);
         }
 
@@ -173,32 +151,28 @@ public class History extends AppCompatActivity {
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String bid = item.getString(TAG_BID);
+                String id = item.getString(TAG_ID);
                 String date = item.getString(TAG_DATE);
-                String ustart = item.getString(TAG_USTART);
-                String uend = item.getString(TAG_UEND);
-                String utime = item.getString(TAG_UTIME);
-                String charge = item.getString(TAG_CHARGE);
+                String step = item.getString(TAG_STEP);
+
 
                 HashMap<String,String> hashMap = new HashMap<>();
 
-                hashMap.put(TAG_BID, bid);
+                hashMap.put(TAG_ID, id);
                 hashMap.put(TAG_DATE, date);
-                hashMap.put(TAG_USTART, ustart);
-                hashMap.put(TAG_UEND, uend);
-                hashMap.put(TAG_UTIME, utime);
-                hashMap.put(TAG_CHARGE, charge);
+                hashMap.put(TAG_STEP, step);
+
 
                 mArrayList.add(hashMap);
             }
 
-//            ListAdapter adapter = new SimpleAdapter(
-//                    History.this, mArrayList, R.layout.item_list,
-//                    new String[]{TAG_BID,TAG_DATE, TAG_USTART, TAG_UEND,TAG_CHARGE},
-//                    new int[]{R.id.bid, R.id.date, R.id.ustart, R.id.uend,R.id.charge}
-//            );
+            ListAdapter adapter = new SimpleAdapter(
+                    Emergency_History.this, mArrayList, R.layout.item_list,
+                    new String[]{TAG_ID,TAG_DATE, TAG_STEP},
+                    new int[]{R.id.id, R.id.date, R.id.step}
+            );
 
-//            mlistView.setAdapter(adapter);
+            mlistView.setAdapter(adapter);
 
         } catch (JSONException e) {
 
@@ -206,6 +180,4 @@ public class History extends AppCompatActivity {
         }
 
     }
-
 }
-

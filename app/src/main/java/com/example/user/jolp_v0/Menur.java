@@ -54,7 +54,7 @@ public class Menur extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent1 = new Intent(Menur.this, Emergency.class);
-//                intent1.putExtra("id",id);
+                intent1.putExtra("id",id);
                 startActivity(intent1);
             }
         });

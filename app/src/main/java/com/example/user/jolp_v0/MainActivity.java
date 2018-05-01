@@ -128,7 +128,9 @@ public class MainActivity extends FragmentActivity {
                 Intent intent1 = new Intent(MainActivity.this, Menur.class);
                 intent1.putExtra("id",eid.getText().toString());
                 startActivity(intent1);
-                finish();
+                eid.setText("");
+                epw.setText("");
+                //finish();
             }
             else{
                 Toast.makeText(getApplicationContext(), "ID, PW를 확인해주세요.", Toast.LENGTH_SHORT).show();
