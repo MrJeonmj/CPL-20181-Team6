@@ -1,0 +1,188 @@
+package com.example.user.jolp_v0;
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+
+
+public class Join extends FragmentActivity {
+
+    phpdo task;
+
+    EditText eid;
+    EditText epw;
+    EditText ename, econtact, eaddress;
+    TextView ebirth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_join);
+
+        eid = (EditText)findViewById(R.id.join_id);
+        epw = (EditText)findViewById(R.id.join_pw);
+        ename = (EditText) findViewById(R.id.join_name);
+        econtact = (EditText)findViewById(R.id.join_contact);
+        eaddress = (EditText)findViewById(R.id.join_address);
+        ebirth = (TextView) findViewById(R.id.join_birth_text);
+
+//        mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
+
+
+
+        Button buttondate = (Button)findViewById(R.id.join_birth_btn);
+        buttondate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(1);
+
+//                DatePickerDialog dialog = new DatePickerDialog(this, listener, 2013, 10, 22);
+//                dialog.show();
+
+
+            }
+
+
+        });
+
+
+
+        Button buttonInsert = (Button)findViewById(R.id.join_insert_btn);
+        buttonInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String id = eid.getText().toString();
+                String pw = epw.getText().toString();
+                String name = ename.getText().toString();
+                String contact = econtact.getText().toString();
+                String birth = ebirth.getText().toString();
+
+                task = new phpdo();
+                task.execute(id, pw, name, contact, birth);
+                finish();
+
+            }
+        });
+
+    }
+
+    protected Dialog onCreateDialog(int id) {
+
+        DatePickerDialog dpd = new DatePickerDialog
+                (Join.this, // 현재화면의 제어권자
+                        new DatePickerDialog.OnDateSetListener() {
+                            public void onDateSet(DatePicker view,
+                                                  int year, int monthOfYear,int dayOfMonth) {
+                                String month;
+                                if(monthOfYear<10){
+                                    month = "0"+(monthOfYear+1);
+                                }
+                                else{
+                                    month = Integer.toString(monthOfYear+1);
+                                }
+                                String day;
+                                if(dayOfMonth<10){
+                                    day = "0"+(dayOfMonth);
+                                }
+                                else{
+                                    day = Integer.toString(dayOfMonth);
+                                }
+
+                                ebirth.setText(year+"-"+month+"-"+day);
+                            }
+                        }
+                        , // 사용자가 날짜설정 후 다이얼로그 빠져나올때
+                        //    호출할 리스너 등록
+                        2015, 6, 21); // 기본값 연월일
+        return dpd;
+        //return super.onCreateDialog(id);
+
+
+
+
+    }
+
+//    private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+//
+//        @Override
+//
+//        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//
+//            Toast.makeText(getApplicationContext(), year + "년" + monthOfYear + "월" + dayOfMonth +"일", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//    };
+
+
+    private class phpdo extends AsyncTask<String,Void,String> {
+
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            try {
+                String id = (String)arg0[0];
+                String pw = (String)arg0[1];
+                String name = (String)arg0[2];
+                String contact = (String)arg0[3];
+                String birth = (String)arg0[4];
+
+                String link = "http://13.124.241.9/join2.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&BIRTHDATE="+birth;
+                URL url = new URL(link);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(link));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                in.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            //txtview.setText("Login Successful");
+            //mTextViewResult.setText(result);
+        }
+    }
+
+}

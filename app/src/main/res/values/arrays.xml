@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="option">
+        <item >신한카드</item>
+        <item >농협</item>
+        <item >비씨카드</item>
+        <item >국민카드</item>
+        <item >삼성카드</item>
+
+    </string-array>
+</resources>

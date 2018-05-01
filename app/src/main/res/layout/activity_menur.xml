@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.jolp_v0.Menur">
+
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_rent"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="165dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:adjustViewBounds="false"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--app:srcCompat="@drawable/rentimg" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_return"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="165dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:adjustViewBounds="false"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--app:srcCompat="@drawable/returnimg" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_history"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="165dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--app:srcCompat="@drawable/historyimg" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button_card"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_height="165dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--app:srcCompat="@drawable/cardimg" />-->
+    <!--</LinearLayout>-->
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:text="5월 1일 (화) 오전 11:05" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="60dp"
+            android:layout_height="78dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/heart" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="30dp"
+            android:textColor="#ff8a65"
+            android:textStyle="bold"
+            android:text="90 bpm" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="#36484c"
+        android:layout_marginBottom="30dp"
+        android:text="운동 후" />
+
+    <ImageButton
+        android:id="@+id/btn_stat"
+        android:layout_width="366dp"
+        android:layout_height="130dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/stat_img" />
+
+    <ImageButton
+        android:id="@+id/btn_em"
+        android:layout_width="366dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        app:srcCompat="@drawable/em_img" />
+</LinearLayout>
