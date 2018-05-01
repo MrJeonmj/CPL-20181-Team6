@@ -16,29 +16,47 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="72dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="0dp"
             android:src="@drawable/cardimg" />
 
 
         <!--  Name Label -->
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/join_id"
+            <android.support.design.widget.TextInputLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ID"
-                android:inputType="textCapWords"
-                android:textColor="#ffffff" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/join_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="ID"
+                    android:inputType="textCapWords"
+                    android:textColor="#ffffff" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <!--<Button-->
+                <!--android:id="@+id/btn_id_verify"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:text="중복검사" />-->
+        </LinearLayout>
 
         <!-- Email Label -->
+
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +84,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="이름"
-                android:inputType="textPassword"
                 android:textColor="#ffffff" />
         </android.support.design.widget.TextInputLayout>
 
@@ -103,10 +120,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
             android:weightSum="1">
 
             <TextView
@@ -114,22 +131,65 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.12"
-                android:textSize="18dp"
-                android:text="생일" />
+                android:text="생일"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/join_birth_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.88"
-                android:textSize="18dp"
-                android:text="" />
+                android:text=""
+                android:textSize="18dp" />
 
             <Button
                 android:id="@+id/join_birth_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="날짜선택" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textVie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:text="환자/보호자"
+                android:layout_marginRight="30dp"
+                android:textSize="17dp" />
+
+            <RadioGroup
+                android:id="@+id/btn_is_patient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/btn_patient"
+                    android:layout_height="wrap_content"
+                    android:text="환자"
+                    android:layout_width="107dp" />
+
+                <RadioButton
+                    android:id="@+id/btn_guardian"
+                    android:layout_width="117dp"
+                    android:layout_height="wrap_content"
+
+                    android:text="보호자" />
+
+            </RadioGroup>
+
+
         </LinearLayout>
 
         <!-- Signup Button -->

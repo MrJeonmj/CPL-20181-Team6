@@ -14,6 +14,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -52,15 +53,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
 
-                Intent a = new Intent(MainActivity.this, Menur.class);
-                startActivity(a);
+//                Intent a = new Intent(MainActivity.this, Menur.class);
+//                startActivity(a);
 //
-//                id = eid.getText().toString();
-//                pw = epw.getText().toString();
+                id = eid.getText().toString();
+                pw = epw.getText().toString();
 //
 //
-//                task = new phpdo();
-//                task.execute(id, pw);
+                task = new phpdo();
+                task.execute(id, pw);
 
 
 
@@ -95,7 +96,7 @@ public class MainActivity extends FragmentActivity {
                 String id = (String)arg0[0];
                 String pw = (String)arg0[1];
 
-                String link = "http://13.124.241.9/logintest.php?ID="+id+"&PW="+pw;
+                String link = "http://show8258.ipdisk.co.kr:8000/logintest.php?ID="+id+"&PW="+pw;
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -121,13 +122,16 @@ public class MainActivity extends FragmentActivity {
         @Override
         protected void onPostExecute(String result){
             //txtview.setText("Login Successful");
-            mTextViewResult.setText(result);
+            //mTextViewResult.setText(result);
 
             if(result.equals("login_success")){
                 Intent intent1 = new Intent(MainActivity.this, Menur.class);
                 intent1.putExtra("id",eid.getText().toString());
                 startActivity(intent1);
                 finish();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "ID, PW를 확인해주세요.", Toast.LENGTH_SHORT).show();
             }
 
         }

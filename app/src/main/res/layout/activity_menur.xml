@@ -60,7 +60,7 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
         android:textSize="20dp"
         android:text="5월 1일 (화) 오전 11:05" />
@@ -68,7 +68,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="horizontal">
@@ -99,7 +99,7 @@
         android:layout_marginTop="25dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textColor="#36484c"
         android:layout_marginBottom="30dp"
         android:text="운동 후" />
@@ -111,14 +111,16 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_gravity="center"
+        android:backgroundTint="#00000000"
         app:srcCompat="@drawable/stat_img" />
 
     <ImageButton
         android:id="@+id/btn_em"
         android:layout_width="366dp"
         android:layout_height="130dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="#00000000"
         app:srcCompat="@drawable/em_img" />
 </LinearLayout>

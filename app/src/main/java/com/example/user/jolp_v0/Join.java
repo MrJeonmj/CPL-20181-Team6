@@ -14,6 +14,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class Join extends FragmentActivity {
     EditText epw;
     EditText ename, econtact, eaddress;
     TextView ebirth;
+    String epatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,12 @@ public class Join extends FragmentActivity {
 
         });
 
+        final RadioGroup rg = (RadioGroup)findViewById(R.id.btn_is_patient);
+        int id = rg.getCheckedRadioButtonId();
+        //RadioButton rb = (RadioButton) findViewById(id);
+        epatient = Integer.toString(id);
+
+
 
 
         Button buttonInsert = (Button)findViewById(R.id.join_insert_btn);
@@ -80,11 +89,14 @@ public class Join extends FragmentActivity {
                 String pw = epw.getText().toString();
                 String name = ename.getText().toString();
                 String contact = econtact.getText().toString();
+                String address = eaddress.getText().toString();
                 String birth = ebirth.getText().toString();
 
+
+
                 task = new phpdo();
-                task.execute(id, pw, name, contact, birth);
-                finish();
+                task.execute(id, pw, name, contact, address, birth, epatient);
+                //finish();
 
             }
         });
@@ -153,9 +165,11 @@ public class Join extends FragmentActivity {
                 String pw = (String)arg0[1];
                 String name = (String)arg0[2];
                 String contact = (String)arg0[3];
-                String birth = (String)arg0[4];
+                String address = (String)arg0[4];
+                String birth = (String)arg0[5];
+                String is_patient = (String)arg0[6];
 
-                String link = "http://13.124.241.9/join2.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&BIRTHDATE="+birth;
+                String link = "http://show8258.ipdisk.co.kr:8000/join.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&ADDRESS="+address+"&BIRTHDATE="+birth+"&IS_PATIENT="+is_patient;
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
@@ -181,7 +195,19 @@ public class Join extends FragmentActivity {
         @Override
         protected void onPostExecute(String result){
             //txtview.setText("Login Successful");
-            //mTextViewResult.setText(result);
+            switch (result){
+                case "join_success":
+                    Toast.makeText(getApplicationContext(), "회원가입 성공", Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+                case "id_overlap":
+                    Toast.makeText(getApplicationContext(), "ID가 중복됩니다.", Toast.LENGTH_SHORT).show();
+                    break;
+                case "blank_existed":
+                    Toast.makeText(getApplicationContext(), "빈칸이 있습니다.", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
         }
     }
 
