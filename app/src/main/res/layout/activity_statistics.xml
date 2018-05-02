@@ -13,24 +13,63 @@
 
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="364dp"
+        android:layout_height="238dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonY"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="년" />
+
+        <Button
+            android:id="@+id/buttonM"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="월" />
+
+        <Button
+            android:id="@+id/buttonW"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="주" />
+
+        <Button
+            android:id="@+id/buttonD"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="일" />
+
+        <Button
+            android:id="@+id/buttonH"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="시" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="40dp"
-        >
+        android:orientation="horizontal">
 
 
         <LinearLayout
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginLeft="35dp"
-            android:layout_width="100dp">
+            android:orientation="vertical">
 
 
             <ImageView
@@ -45,15 +84,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle"
                 android:gravity="center"
-                android:textSize="23dp"
-                android:text="90" />
+                android:text="90"
+                android:textSize="23dp" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginLeft="20dp"
-            android:layout_width="100dp">
+            android:orientation="vertical">
 
 
             <ImageView
@@ -68,15 +107,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle"
                 android:gravity="center"
-                android:textSize="23dp"
-                android:text="85" />
+                android:text="85"
+                android:textSize="23dp" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginLeft="20dp"
-            android:layout_width="100dp">
+            android:orientation="vertical">
 
 
             <ImageView
@@ -91,8 +130,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle"
                 android:gravity="center"
-                android:textSize="23dp"
-                android:text="71" />
+                android:text="71"
+                android:textSize="23dp" />
         </LinearLayout>
 
     </LinearLayout>
