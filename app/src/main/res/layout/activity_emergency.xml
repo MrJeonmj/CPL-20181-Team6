@@ -10,6 +10,7 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:layout_rowWeight="5"
+    android:background="@drawable/background"
     tools:context="com.example.user.jolp_v0.Emergency">
 
     <Button
@@ -42,9 +43,9 @@
         android:text="0" />
 
     <!--<view-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="15dp"-->
-        <!--/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="15dp"-->
+    <!--/>-->
 
     <Button
         android:id="@+id/emstep3"
@@ -61,9 +62,9 @@
         android:text="0" />
 
     <!--<view-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="15dp"-->
-        <!--/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="15dp"-->
+    <!--/>-->
 
     <Button
         android:id="@+id/emstep4"
@@ -80,9 +81,9 @@
         android:text="0" />
 
     <!--<view-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="15dp"-->
-        <!--/>-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="15dp"-->
+    <!--/>-->
 
     <Button
         android:id="@+id/emstep5"

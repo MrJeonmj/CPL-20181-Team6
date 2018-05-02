@@ -1,13 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context="com.example.user.jolp_v0.Statistics">
 
-    <com.jjoe64.graphview.GraphView
+
+    <com.github.mikephil.charting.charts.LineChart
+
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graph" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="364dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp"
+        >
+
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="35dp"
+            android:layout_width="100dp">
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/max_beat" />
+
+            <TextView
+                android:id="@+id/text_maxbeat"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:textSize="23dp"
+                android:text="90" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp">
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/avg_beat" />
+
+            <TextView
+                android:id="@+id/text_avgbeat"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:textSize="23dp"
+                android:text="85" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_width="100dp">
+
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/low_beat" />
+
+            <TextView
+                android:id="@+id/text_lowbeat"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:textSize="23dp"
+                android:text="71" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
