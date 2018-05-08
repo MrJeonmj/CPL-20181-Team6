@@ -6,58 +6,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background"
-    tools:context="com.example.user.jolp_v0.Statistics">
+    tools:context="com.example.user.jolp_v0.Statistics"
+    android:theme="@style/Theme.AppCompat.NoActionBar">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/graph_scope" />
+
+    </android.support.v7.widget.Toolbar>
 
     <com.github.mikephil.charting.charts.LineChart
 
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="238dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="88dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/buttonY"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="년" />
-
-        <Button
-            android:id="@+id/buttonM"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="월" />
-
-        <Button
-            android:id="@+id/buttonW"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="주" />
-
-        <Button
-            android:id="@+id/buttonD"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="일" />
-
-        <Button
-            android:id="@+id/buttonH"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="시" />
-    </LinearLayout>
+        android:layout_margin="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +41,7 @@
         <LinearLayout
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical">
 
 
