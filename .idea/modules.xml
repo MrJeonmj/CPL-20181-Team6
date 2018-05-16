@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/CPL-20181-Team6.iml" filepath="$PROJECT_DIR$/.idea/CPL-20181-Team6.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jolp2_v0_0_.iml" filepath="$PROJECT_DIR$/jolp2_v0_0_.iml" />
     </modules>
   </component>
 </project>

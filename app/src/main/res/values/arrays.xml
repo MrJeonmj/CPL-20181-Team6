@@ -8,4 +8,12 @@
         <item >삼성카드</item>
 
     </string-array>
+    <string-array name="graph_scope" >
+        <item >1년</item>
+        <item >1개월</item>
+        <item >7일</item>
+        <item >24시간</item>
+        <item >1시간</item>
+
+    </string-array>
 </resources>
