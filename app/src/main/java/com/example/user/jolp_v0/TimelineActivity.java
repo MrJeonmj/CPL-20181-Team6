@@ -31,6 +31,7 @@ public class TimelineActivity extends AppCompatActivity {
     // https://github.com/hypeapps/MaterialTimelineView/issues/6
 
     private static final int[] COLOR_BY_STEP = { 0xff000000, 0xfffbe5d6, 0xfff8cbad, 0xfff4b183, 0xffff6d6d, 0xffff3f3f };
+    // [0] is used as bgColor for line object
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
