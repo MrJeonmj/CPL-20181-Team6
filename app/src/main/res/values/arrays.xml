@@ -8,4 +8,13 @@
         <item >삼성카드</item>
 
     </string-array>
+    <string-array name="graph_scope">
+        <item >년</item>
+        <item >월</item>
+        <item >주</item>
+        <item >일</item>
+        <item >시</item>
+
+    </string-array>
+
 </resources>
