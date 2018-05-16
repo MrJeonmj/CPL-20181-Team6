@@ -4,9 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -170,6 +172,7 @@ public class Statistics extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
+        /*
         Button buttonY = (Button)findViewById(R.id.buttonY);
         buttonY.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +225,27 @@ public class Statistics extends AppCompatActivity {
                 labels = getLabels(DATA_GETTING_MODE_HOUR);
                 entries = getEntries(DATA_GETTING_MODE_HOUR);
                 initGraph();
+            }
+        });
+        */
+
+        final Spinner spinner = (Spinner)findViewById(R.id.spinner2);
+        spinner.setOnItemSelectedListener (new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+               Spinner s = (Spinner)parent;
+               int selected = (int) s.getSelectedItemId();
+               labels = getLabels(selected);
+               entries = getEntries(selected);
+               initGraph();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+                labels = getLabels(DATA_GETTING_MODE_MONTH);
+                entries = getEntries(DATA_GETTING_MODE_MONTH);
             }
         });
 
