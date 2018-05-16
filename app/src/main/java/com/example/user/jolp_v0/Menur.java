@@ -53,7 +53,7 @@ public class Menur extends AppCompatActivity {
         em.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(Menur.this, Emergency.class);
+                Intent intent1 = new Intent(Menur.this, TimelineActivity.class);
                 intent1.putExtra("id",id);
                 startActivity(intent1);
             }

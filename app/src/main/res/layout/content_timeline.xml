@@ -15,56 +15,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <pl.hypeapp.materialtimelineview.MaterialTimelineView
-            android:id="@+id/material_timeline_view"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@android:color/holo_orange_light"
-            app:timeline_bottom_radio_color="@android:color/holo_blue_dark"
-            app:timeline_line_color="@android:color/white"
-            app:timeline_margin_start="32dp"
-            app:timeline_position="first"
-            app:timeline_radio_outline_radius="20"
-            app:timeline_radio_radius="12"
-            app:timeline_top_radio_color="@android:color/white"
-            app:timeline_type="item">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HELLO WORLD"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </pl.hypeapp.materialtimelineview.MaterialTimelineView>
-
-        <pl.hypeapp.materialtimelineview.MaterialTimelineView
-            android:id="@+id/material_timeline_view2"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@android:color/black"
-            app:timeline_bottom_radio_color="@android:color/holo_blue_dark"
-            app:timeline_line_color="@android:color/white"
-            app:timeline_margin_start="32dp"
-            app:timeline_position="middle"
-            app:timeline_radio_outline_radius="20"
-            app:timeline_radio_radius="12"
-            app:timeline_top_radio_color="@android:color/holo_blue_dark"
-            app:timeline_type="line">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HELLO WORLD"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </pl.hypeapp.materialtimelineview.MaterialTimelineView>
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
