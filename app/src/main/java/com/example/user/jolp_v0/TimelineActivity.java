@@ -22,16 +22,11 @@ import pl.hypeapp.materialtimelineview.MaterialTimelineView;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private static final int TIMELINE_TYPE_LINE = 0;
-    private static final int TIMELINE_TYPE_ITEM = 1;
-    private static final int POSITION_FIRST = 0;
-    private static final int POSITION_MIDDLE = 1;
-    private static final int POSITION_LAST = 2;
-    // TODO: submit an issue being constants in class private
-    // https://github.com/hypeapps/MaterialTimelineView/issues/6
-
     private static final int[] COLOR_BY_STEP = { 0xff000000, 0xfffbe5d6, 0xfff8cbad, 0xfff4b183, 0xffff6d6d, 0xffff3f3f };
-    // [0] is used as bgColor for line object
+    // [0] will be used as bgColor for line object
+
+    private static final int COLOR_WHITE = 0xffffffff;
+    private static final int COLOR_BLACK = 0xff000000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +40,15 @@ public class TimelineActivity extends AppCompatActivity {
         ArrayList<MaterialTimelineView> mtvs = new ArrayList<>();
 
         // set color in form of 0xAARRGGBB
-        mtvs.add(makeCard(COLOR_BY_STEP[1], "Programmatically", 0xff000000, TIMELINE_TYPE_ITEM, POSITION_FIRST));
-        mtvs.add(makeCard(COLOR_BY_STEP[0], "Added", 0xffffffff, TIMELINE_TYPE_LINE, POSITION_MIDDLE));
-        mtvs.add(makeCard(COLOR_BY_STEP[5], "Items!", 0xff000000, TIMELINE_TYPE_ITEM, POSITION_LAST));
+        mtvs.add(makeCard(COLOR_BY_STEP[1], "Programmatically", COLOR_BLACK,
+                MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
+                MaterialTimelineView.Companion.getPOSITION_FIRST()));
+        mtvs.add(makeCard(COLOR_BY_STEP[0], "Added", COLOR_WHITE,
+                MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(),
+                MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
+        mtvs.add(makeCard(COLOR_BY_STEP[5], "Items!", COLOR_BLACK,
+                MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
+                MaterialTimelineView.Companion.getPOSITION_LAST()));
 
 
         for (MaterialTimelineView mtv: mtvs)
