@@ -1,5 +1,6 @@
 package com.example.user.jolp_v0;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -27,11 +28,18 @@ public class TimelineActivity extends AppCompatActivity {
 
     private static final int COLOR_WHITE = 0xffffffff;
     private static final int COLOR_BLACK = 0xff000000;
+    int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        Intent intent = getIntent();
+        year = (Integer) intent.getIntExtra("year",1);
+        month = (Integer) intent.getIntExtra("month",1);
+        day = (Integer) intent.getIntExtra("day",1);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

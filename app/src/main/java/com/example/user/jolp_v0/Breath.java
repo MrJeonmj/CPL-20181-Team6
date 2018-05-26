@@ -1,13 +1,13 @@
 package com.example.user.jolp_v0;
 
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -21,7 +21,12 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
-public class Statistics extends AppCompatActivity {
+/**
+ * Created by kch on 2017. 9. 22..
+ */
+
+public class Breath extends Fragment {
+    View v;
 
     private ArrayList<String> labels;
     private ArrayList<Entry> entries;
@@ -117,7 +122,7 @@ public class Statistics extends AppCompatActivity {
 
     private void initGraph()
     {
-        LineChart lineChart = (LineChart) findViewById(R.id.chart);
+        LineChart lineChart = (LineChart) v.findViewById(R.id.chart);
         LineDataSet lineDataSet = new LineDataSet(entries, "심박수");
         lineDataSet.setColors(ColorTemplate.PASTEL_COLORS);
         //lineDataSet.setDrawCubic(true);
@@ -166,79 +171,23 @@ public class Statistics extends AppCompatActivity {
         lineChart.animateXY(2000, 2000); //애니메이션 기능 활성화
         lineChart.invalidate();
     }
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistics);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        /*
-        Button buttonY = (Button)findViewById(R.id.buttonY);
-        buttonY.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                labels = getLabels(DATA_GETTING_MODE_YEAR);
-                entries = getEntries(DATA_GETTING_MODE_YEAR);
-                initGraph();
-            }
-        });
 
-        Button buttonM = (Button)findViewById(R.id.buttonM);
-        buttonM.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                labels = getLabels(DATA_GETTING_MODE_MONTH);
-                entries = getEntries(DATA_GETTING_MODE_MONTH);
-                initGraph();
-            }
-        });
+        v = inflater.inflate(R.layout.fragment_breath, container, false);
 
-        Button buttonW = (Button)findViewById(R.id.buttonW);
-        buttonW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                labels = getLabels(DATA_GETTING_MODE_WEEK);
-                entries = getEntries(DATA_GETTING_MODE_WEEK);
-                initGraph();
-            }
-        });
-
-        Button buttonD = (Button)findViewById(R.id.buttonD);
-        buttonD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                labels = getLabels(DATA_GETTING_MODE_DAY);
-                entries = getEntries(DATA_GETTING_MODE_DAY);
-                initGraph();
-            }
-        });
-
-        Button buttonH = (Button)findViewById(R.id.buttonH);
-        buttonH.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                labels = getLabels(DATA_GETTING_MODE_HOUR);
-                entries = getEntries(DATA_GETTING_MODE_HOUR);
-                initGraph();
-            }
-        });
-        */
-
-        final Spinner spinner = (Spinner)findViewById(R.id.spinner2);
+        Spinner spinner = (Spinner)v.findViewById(R.id.spinner2);
         spinner.setOnItemSelectedListener (new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-               Spinner s = (Spinner)parent;
-               int selected = (int) s.getSelectedItemId();
-               labels = getLabels(selected);
-               entries = getEntries(selected);
-               initGraph();
+                Spinner s = (Spinner)parent;
+                int selected = (int) s.getSelectedItemId();
+                labels = getLabels(selected);
+                entries = getEntries(selected);
+                initGraph();
             }
 
             @Override
@@ -253,5 +202,6 @@ public class Statistics extends AppCompatActivity {
         labels = getLabels(DATA_GETTING_MODE_MONTH);
         entries = getEntries(DATA_GETTING_MODE_MONTH);
         initGraph();
+        return v;
     }
 }

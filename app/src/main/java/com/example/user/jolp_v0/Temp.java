@@ -1,5 +1,12 @@
 package com.example.user.jolp_v0;
 
+import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
@@ -26,20 +33,25 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+/**
+ * Created by kch on 2017. 9. 22..
+ */
 
-public class Calendar_Statistics extends AppCompatActivity {
-
+public class Temp extends Fragment {
+    View v;
     String time,kcal,menu;
     Cursor cursor;
     MaterialCalendarView materialCalendarView;
     ArrayList<DayInfo> dayInfoArrayList = new ArrayList<>();
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendar_statistics);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        materialCalendarView = (MaterialCalendarView)findViewById(R.id.calendarView);
+        //inflate메소드는 XML데이터를 가져와서 실제 View객체로 만드는 작업을 합니다.
+        v = inflater.inflate(R.layout.fragment_temp, container, false);
+
+        materialCalendarView = (MaterialCalendarView)v.findViewById(R.id.calendarView);
 
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -69,13 +81,20 @@ public class Calendar_Statistics extends AppCompatActivity {
                 Log.i("shot_Day test", shot_Day + "");
                 materialCalendarView.clearSelection();
 
-                Toast.makeText(getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(getActivity(), TimelineActivity.class);
+                intent1.putExtra("year",Year);
+                intent1.putExtra("month",Month);
+                intent1.putExtra("day",Day);
+
+                Toast.makeText(getActivity().getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
+                startActivity(intent1);
             }
         });
-    }
 
+        return v;
+    }
     @Override
-    protected void onResume() {
+    public void onResume() {
         addDayInfoArrayList(0,Color.RED,2018,5,17);
         addDayInfoArrayList(0,Color.GRAY,2018,5,11);
         addDayInfoArrayList(0,Color.BLUE,2018,5,10);
@@ -131,4 +150,5 @@ public class Calendar_Statistics extends AppCompatActivity {
         DayInfo k = new DayInfo(importance,color,year,month,day);
         dayInfoArrayList.add(k);
     }
+
 }

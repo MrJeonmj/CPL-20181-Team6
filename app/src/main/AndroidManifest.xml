@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -26,7 +28,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity" >
+        <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,18 +36,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".Join" />
-        <activity android:name=".Menur" />
-        <activity android:name=".Statistics" />
         <activity android:name=".Emergency" />
         <activity android:name=".Step" />
         <activity android:name=".Emergency_History" />
         <activity
             android:name=".TimelineActivity"
-            android:label="@string/title_activity_timeline"
+
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
+
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- <intent-filter> -->
@@ -55,10 +55,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".Calendar_Statistics"/>
-
-        <activity android:name=".Graph_Statistics"/>
-
+        <activity android:name=".Graph_Statistics" />
     </application>
 
 </manifest>

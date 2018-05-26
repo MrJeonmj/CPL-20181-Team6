@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background1"
-    tools:context="com.example.user.jolp_v0.MainActivity">
+    tools:context="com.example.user.jolp_v0.Login">
     <!--android:background="#e43f3f"-->
 
 

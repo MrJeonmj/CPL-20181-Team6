@@ -5,10 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 // import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,7 +23,7 @@ import java.net.URI;
 import java.net.URL;
 
 
-public class MainActivity extends FragmentActivity {
+public class Login extends FragmentActivity {
 
     phpdo task;
 
@@ -41,7 +37,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         eid = (EditText)findViewById(R.id.login_id);
         epw = (EditText)findViewById(R.id.login_pw);
@@ -74,7 +70,7 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
 
 
-                Intent a = new Intent(MainActivity.this, Join.class);
+                Intent a = new Intent(Login.this, Join.class);
                 startActivity(a);
 
 
@@ -125,7 +121,7 @@ public class MainActivity extends FragmentActivity {
             //mTextViewResult.setText(result);
 
             if(result.equals("login_success")){
-                Intent intent1 = new Intent(MainActivity.this, Menur.class);
+                Intent intent1 = new Intent(Login.this, Main2Activity.class);
                 intent1.putExtra("id",eid.getText().toString());
                 startActivity(intent1);
                 eid.setText("");
