@@ -32,7 +32,11 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getActionBar().setTitle(String.format("%d년 %d월 %d일", 1972, 11, 21)); // TODO
+
+        String xtitle = String.format("%d년 %d월 %d일", 1972, 11, 21);
+        // TODO: error here!
+        getActionBar().setTitle(xtitle);
+        getSupportActionBar().setTitle(xtitle);
 
 
         // programmatically added items
