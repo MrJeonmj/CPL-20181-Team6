@@ -3,7 +3,9 @@ package com.example.user.jolp_v0;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +42,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -61,7 +66,8 @@ public class Temp extends Fragment {
     private static final String TAG_BREATH="BREATH";
     private static final String TAG_DATE="DATE";
     ArrayList<HashMap<String, String>> mArrayList;
-    ArrayList<HashMap<String, String>> Datalist;
+    static ArrayList<Date> date_Data = new ArrayList<>();
+    static ArrayList<Long> step_Data = new ArrayList<>();
     String mJsonString;
     String id;
 
@@ -125,17 +131,37 @@ public class Temp extends Fragment {
             }
         });
 
+        Button buttonjoin = (Button)v.findViewById(R.id.button_graph);
+        buttonjoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent a = new Intent(getActivity(), Graph_Statistics.class);
+                startActivity(a);
+
+
+            }
+        });
         return v;
     }
     @Override
     public void onResume() {
-        addDayInfoArrayList(0,Color.RED,2018,5,17);
-        addDayInfoArrayList(0,Color.GRAY,2018,5,11);
-        addDayInfoArrayList(0,Color.BLUE,2018,5,10);
-        for(DayInfo k : dayInfoArrayList){
-            ArrayList<CalendarDay> dates = new ArrayList<>();
-            dates.add(k.getCal());
-            materialCalendarView.addDecorator(new EventDecorator(k.getColor(), dates));
+//        addDayInfoArrayList(0,Color.RED,2018,5,17);
+//        addDayInfoArrayList(0,Color.GRAY,2018,5,11);
+//        addDayInfoArrayList(0,Color.BLUE,2018,5,10);
+//        for(DayInfo k : dayInfoArrayList){
+//            ArrayList<CalendarDay> dates = new ArrayList<>();
+//            dates.add(k.getCal());
+//            materialCalendarView.addDecorator(new EventDecorator(k.getColor(), dates));
+//        }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        long lastRefresh = sp.getLong("refresh", 0);
+        long now = System.currentTimeMillis();
+        if (lastRefresh == 0 || now - lastRefresh > 5000) {
+            GetData task = new GetData();
+            task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
+            sp.edit().putLong("refresh", now).commit();
         }
         super.onResume();
     }
@@ -301,12 +327,95 @@ public class Temp extends Fragment {
 
                 mArrayList.add(hashMap);
             }
-            for(int i=0;i<mArrayList.size();i++){
-                if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0){
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+            int tag = -1;
+            //Date temp = transFormat.parse("201702011535");
+            Date temp = new Date();
+
+
+            for(int i=0;i<mArrayList.size();i++){
+                if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0 && tag == 1){
+
+                }
+                else if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0){
+                    temp = transFormat.parse(mArrayList.get(i).get(TAG_DATE));
+                    date_Data.add(temp);
+                    tag = 1;
+                }
+                else if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) != 0.0 && tag == 1){
+                    long second = (transFormat.parse(mArrayList.get(i).get(TAG_DATE)).getTime()-temp.getTime())/1000;
+                    step_Data.add(second);
+                    tag = -1;
+                }
+                if((mArrayList.size()-1)==i && tag == 1){
+                    long second = (transFormat.parse(mArrayList.get(i).get(TAG_DATE)).getTime()-temp.getTime())/1000;
+                    step_Data.add(second);
+                    tag = -1;
                 }
 
             }
+            SimpleDateFormat year = new SimpleDateFormat( "yyyy" );
+            SimpleDateFormat month = new SimpleDateFormat( "MM" );
+            SimpleDateFormat day = new SimpleDateFormat( "dd" );
+            Date temp1 = new Date();
+            if(date_Data.size()>1){
+                temp1 = date_Data.get(0);
+            }
+            //String kk = format.format(temp1);
+            int sum=0;
+            for(int i=0;i<date_Data.size();i++){
+                if(year.format(temp1).equals(year.format(date_Data.get(i))) && month.format(temp1).equals(month.format(date_Data.get(i))) && day.format(temp1).equals(day.format(date_Data.get(i)))){
+                        sum += step_Data.get(i);
+                        temp1 = date_Data.get(i);
+                }
+                else{
+                    if(0<sum && sum < 20){
+                        addDayInfoArrayList(0,Color.GREEN,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                    }
+                    else if(20<=sum && sum < 40){
+                        addDayInfoArrayList(0,Color.BLUE,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                    }
+                    else if(40<=sum && sum < 60){
+                        addDayInfoArrayList(0,Color.YELLOW,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                    }
+                    else if(60<=sum && sum < 80){
+                        addDayInfoArrayList(0,Color.BLACK,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                    }
+                    else if(80<=sum){
+                        addDayInfoArrayList(0,Color.RED,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                    }
+                    sum = (int) (long) step_Data.get(i);
+                    temp1 = date_Data.get(i);
+                }
+
+
+            }
+            if(0<sum && sum < 20){
+                addDayInfoArrayList(0,Color.GREEN,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+            }
+            else if(20<=sum && sum < 40){
+                addDayInfoArrayList(0,Color.BLUE,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+            }
+            else if(40<=sum && sum < 60){
+                addDayInfoArrayList(0,Color.YELLOW,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+            }
+            else if(60<=sum && sum < 80){
+                addDayInfoArrayList(0,Color.BLACK,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+            }
+            else if(80<=sum){
+                addDayInfoArrayList(0,Color.RED,Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+            }
+
+            //addDayInfoArrayList(0,Color.RED,2018,5,17);
+            //addDayInfoArrayList(0,Color.GRAY,2018,5,11);
+            //addDayInfoArrayList(0,Color.BLUE,2018,5,10);
+            for(DayInfo k : dayInfoArrayList){
+                ArrayList<CalendarDay> dates = new ArrayList<>();
+                dates.add(k.getCal());
+                materialCalendarView.addDecorator(new EventDecorator(k.getColor(), dates));
+            }
+
 /*
             ListAdapter adapter = new SimpleAdapter(
                     getActivity(), mArrayList, R.layout.item_list,
@@ -318,11 +427,13 @@ public class Temp extends Fragment {
             */
 
 
-            Toast.makeText(getActivity(), mArrayList.get(0).get(0), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
 
             Log.d(TAG, "showResult : ", e);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
     }

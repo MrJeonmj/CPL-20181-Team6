@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
+    android:weightSum="10"
     >
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,6 +16,16 @@
         android:layout_marginTop="50dp"
         app:mcv_selectionColor="#a9d"
         app:mcv_showOtherDates="defaults"
-        android:layout_weight="5.46" />
+        android:layout_weight="8" >
+
+
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+    <Button
+        android:id="@+id/button_graph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="그래프 보기"
+        android:layout_weight="2"/>
 
 </LinearLayout>

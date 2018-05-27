@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    tools:context="com.example.user.jolp_v0.Statistics"
     android:theme="@style/Theme.AppCompat.NoActionBar">
 
     <android.support.v7.widget.Toolbar
