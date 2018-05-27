@@ -35,8 +35,16 @@ public class TimelineActivity extends AppCompatActivity {
 
         String xtitle = String.format("%d년 %d월 %d일", 1972, 11, 21);
         // TODO: error here!
-        getActionBar().setTitle(xtitle);
-        getSupportActionBar().setTitle(xtitle);
+        try
+        {
+            getActionBar().setTitle(xtitle);
+            getSupportActionBar().setTitle(xtitle);
+        }
+        catch (Exception e)
+        {
+            String error = Log.getStackTraceString(e);
+            
+        }
 
 
         // programmatically added items
