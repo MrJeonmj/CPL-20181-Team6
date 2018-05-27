@@ -32,6 +32,7 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getActionBar().setTitle(String.format("%d년 %d월 %d일", 1972, 11, 21)); // TODO
 
 
         // programmatically added items
@@ -44,6 +45,9 @@ public class TimelineActivity extends AppCompatActivity {
             mtvs.add(makeLine("Added", COLOR_WHITE,
                     MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
             mtvs.add(makeCard(5, "Items!", COLOR_BLACK,
+                MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
+            mtvs.add(makeLine("VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! VERY LONG TEXT! ",
+                    COLOR_WHITE,
                     MaterialTimelineView.Companion.getPOSITION_LAST()));
 
 
@@ -73,6 +77,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             // size
             float timeline_card_height = getResources().getDimension(R.dimen.timeline_card_height);
+            // float mp = getResources().getDimension();
             MaterialTimelineView.LayoutParams mtv_para = new MaterialTimelineView.LayoutParams
                     (MaterialTimelineView.LayoutParams.MATCH_PARENT, (int) timeline_card_height);
             mtv.setLayoutParams(mtv_para);
