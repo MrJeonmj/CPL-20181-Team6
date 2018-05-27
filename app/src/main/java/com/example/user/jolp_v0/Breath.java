@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by kch on 2017. 9. 22..
@@ -48,6 +49,7 @@ public class Breath extends Fragment {
 
     private ArrayList<String> labels;
     private ArrayList<Entry> entries;
+    private ArrayList<String> breathData = new ArrayList<>();
 
     // constants
     private final int DATA_GETTING_MODE_YEAR = 0;
@@ -55,111 +57,8 @@ public class Breath extends Fragment {
     private final int DATA_GETTING_MODE_WEEK = 2;
     private final int DATA_GETTING_MODE_DAY = 3;
     private final int DATA_GETTING_MODE_HOUR = 4;
-
-    private ArrayList<String> getLabels(int dataGettingMode)
-    {
-        ArrayList<String> r = new ArrayList<>();
-        Date now = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(now);
-        cal.setLenient(true);
-        SimpleDateFormat f;
-        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss ");
-
-
-        switch (dataGettingMode)
-        {
-            case DATA_GETTING_MODE_YEAR:
-                f = new SimpleDateFormat("yyyy/MM");
-                for (int i = 0; i < 12; ++i)
-                    cal.add(Calendar.MONTH, -1);
-                r.add(f.format(cal.getTime()));
-                Collections.reverse(r);
-                break;
-
-            case DATA_GETTING_MODE_MONTH:
-                f = new SimpleDateFormat("MM/dd");
-                for (int i = 0; i < 30; ++i)
-                    cal.add(Calendar.DAY_OF_MONTH, -1);
-                    r.add(f.format(cal.getTime()));
-                Collections.reverse(r);
-                break;
-
-            case DATA_GETTING_MODE_WEEK:
-                f = new SimpleDateFormat("MM/dd");
-                for (int i = 0; i < 7; ++i)
-                    cal.add(Calendar.DAY_OF_MONTH, -1);
-                r.add(f.format(cal.getTime()));
-                Collections.reverse(r);
-                break;
-
-            case DATA_GETTING_MODE_DAY:
-                f = new SimpleDateFormat("HH:mm");
-                for (int i = 0; i < 7; ++i)
-                    cal.add(Calendar.HOUR_OF_DAY, -1);
-                r.add(f.format(cal.getTime()));
-                Collections.reverse(r);
-                break;
-
-            case DATA_GETTING_MODE_HOUR:
-                f = new SimpleDateFormat("HH:mm");
-                for (int i = 0; i < 60; ++i)
-                    cal.add(Calendar.MINUTE, -1);
-                r.add(f.format(cal.getTime()));
-                Collections.reverse(r);
-                break;
-        }
-
-        return r;
-    }
-
-    private ArrayList<String> breathData = new ArrayList<>();
-
-    private ArrayList<Entry> getEntries(int dataGettingMode)
-    {
-
-        ArrayList<Entry> r = new ArrayList<>();
-        // TODO: mArrayList -> breathData
-        /*for ()
-        {
-
-        }*/
-
-        String[] str_data = breathData.toArray(new String[breathData.size()]);
-        int[] data = new int[str_data.length];
-        for (int i = 0; i < data.length; ++i)
-            data[i] = Integer.parseInt(str_data[i]);
-
-        switch (dataGettingMode)
-        {
-            case DATA_GETTING_MODE_YEAR:
-                for (int i = 0; i < 12; ++i)
-                    r.add(new Entry(data[i], i));
-                break;
-
-            case DATA_GETTING_MODE_MONTH:
-                for (int i = 0; i < 30; ++i)
-                    r.add(new Entry(data[i], i));
-                break;
-
-            case DATA_GETTING_MODE_WEEK:
-                for (int i = 0; i < 7; ++i)
-                    r.add(new Entry(data[i], i));
-                break;
-
-            case DATA_GETTING_MODE_DAY:
-                for (int i = 0; i < 24; ++i)
-                    r.add(new Entry(data[i], i));
-                break;
-
-            case DATA_GETTING_MODE_HOUR:
-                for (int i = 0; i < 60; ++i)
-                    r.add(new Entry(data[i], i));
-                break;
-        }
-
-        return r;
-    }
+    // private final int DATA_GETTING_RECENT = 5;
+    // private final int DATA_GETTING_RECENT_LENGTH = 50;
 
     private static String TAG = "phptest";
     private static final String TAG_JSON="webnautes";
@@ -250,6 +149,93 @@ public class Breath extends Fragment {
         }
     }
 
+    private void getLabelsAndEntries(int dataGettingMode)
+    {
+        labels = new ArrayList<>();
+        entries = new ArrayList<>();
+        ArrayList<String> temp = new ArrayList<>();
+
+        Date accessTime = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(accessTime);
+        cal.setLenient(true);
+        SimpleDateFormat f;
+
+        String[] str_data = breathData.toArray(new String[breathData.size()]);
+        int[] data = new int[str_data.length];
+        for (int i = 0; i < data.length; ++i)
+            data[i] = Integer.parseInt(str_data[i]);
+
+        switch (dataGettingMode)
+        {
+            case DATA_GETTING_MODE_YEAR:
+                // get labels
+                f = new SimpleDateFormat("yyyy/MM", Locale.KOREA);
+                for (int i = 0; i < 12; ++i)
+                {
+                    temp.add(f.format(cal.getTime()));
+                    cal.add(Calendar.MONTH, -1);
+                }
+                Collections.reverse(temp);
+
+                // get entries; TODO: average of each month for 12 months
+
+                break;
+
+            case DATA_GETTING_MODE_MONTH:
+                // get labels
+                f = new SimpleDateFormat("MM/dd", Locale.KOREA);
+                for (int i = 0; i < 30; ++i)
+                {
+                    temp.add(f.format(cal.getTime()));
+                    cal.add(Calendar.DAY_OF_MONTH, -1);
+                }
+                Collections.reverse(temp);
+
+                // get entries; TODO: average of each day for 30 days
+                break;
+
+            case DATA_GETTING_MODE_WEEK:
+                // get labels
+                f = new SimpleDateFormat("MM/dd", Locale.KOREA);
+                for (int i = 0; i < 7; ++i)
+                {
+                    temp.add(f.format(cal.getTime()));
+                    cal.add(Calendar.DAY_OF_MONTH, -1);
+                }
+                Collections.reverse(temp);
+
+                // get entries; TODO: average of each day for 7 days
+                break;
+
+            case DATA_GETTING_MODE_DAY:
+                // get labels
+                f = new SimpleDateFormat("HH:mm", Locale.KOREA);
+                for (int i = 0; i < 7; ++i)
+                {
+                    temp.add(f.format(cal.getTime()));
+                    cal.add(Calendar.HOUR_OF_DAY, -1);
+                }
+                Collections.reverse(temp);
+
+                // get entries; TODO: average of each hour for 24 hours
+                break;
+
+            case DATA_GETTING_MODE_HOUR:
+                // get labels
+                f = new SimpleDateFormat("HH:mm", Locale.KOREA);
+                for (int i = 0; i < 60; ++i)
+                {
+                    temp.add(f.format(cal.getTime()));
+                    cal.add(Calendar.MINUTE, -1);
+                }
+                Collections.reverse(temp);
+
+                // get entries; TODO: average of each minute for 60 minutes
+                break;
+        }
+
+    }
 
     private void showResult(){
         try {
@@ -356,22 +342,19 @@ public class Breath extends Fragment {
             {
                 Spinner s = (Spinner)parent;
                 int selected = (int) s.getSelectedItemId();
-                labels = getLabels(selected);
-                entries = getEntries(selected);
+                getLabelsAndEntries(selected);
                 initGraph();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
-                labels = getLabels(DATA_GETTING_MODE_MONTH);
-                entries = getEntries(DATA_GETTING_MODE_MONTH);
+                getLabelsAndEntries(DATA_GETTING_MODE_MONTH);
             }
         });
 
         // default
-        labels = getLabels(DATA_GETTING_MODE_MONTH);
-        entries = getEntries(DATA_GETTING_MODE_MONTH);
+        getLabelsAndEntries(DATA_GETTING_MODE_MONTH);
         initGraph();
 
 
