@@ -179,7 +179,7 @@ public class Join extends FragmentActivity {
                 String is_patient = (String)arg0[6];
 
                 String link = "http://show8258.ipdisk.co.kr:8000/join.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&ADDRESS="+address+"&BIRTHDATE="+birth+"&IS_PATIENT="+is_patient;
-                URL url = new URL(URLEncoder.encode(link, "UTF-8"));
+                URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(link));

@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:layout_gravity="center"
+                    android:onClick="em_click"
                     android:background="@android:color/transparent"
                     app:srcCompat="@drawable/emg_button" />
 

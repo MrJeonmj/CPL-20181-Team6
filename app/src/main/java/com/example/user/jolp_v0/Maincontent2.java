@@ -36,17 +36,14 @@ import java.util.TimerTask;
 
 public class Maincontent2 extends Fragment {
     View v;
-
     Timer mTimer;
     TextView timeTv;
     //InputMethodManager imm;
     PendingIntent sentPI;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
-
     private String Message = "비상상황입니다."; // 문자 보낼 메시지
     private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
-
 
     @Nullable
     @Override
@@ -69,8 +66,6 @@ public class Maincontent2 extends Fragment {
         MainTimerTask timerTask = new MainTimerTask();
         Timer timer = new Timer();
         timer.schedule(timerTask,500,1000);
-
-
 
         return v;
     }
@@ -144,21 +139,5 @@ public class Maincontent2 extends Fragment {
             mHandler.post(mUpdateTimeTask);
         }
     }
-    //한 번 더 누르면 종료
-//    @Override
-//    public void onBackPressed() {
-//
-//        long tempTime = System.currentTimeMillis();
-//        long intervalTime = tempTime - backPressedTime;
-//
-//        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
-//        {
-//            super.onBackPressed();
-//        }
-//        else
-//        {
-//            backPressedTime = tempTime;
-//            Toast.makeText(getActivity().getApplicationContext(), "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 }
