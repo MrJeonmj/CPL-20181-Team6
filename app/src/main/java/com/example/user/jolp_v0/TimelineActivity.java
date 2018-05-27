@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +20,11 @@ public class TimelineActivity extends AppCompatActivity {
 
     private static final int COLOR_WHITE = 0xffffffff;
     private static final int COLOR_BLACK = 0xff000000;
+    private static final int COLOR_RED = 0xffff0000;
+    private final MaterialTimelineView RED_CARD =
+            makeObj(COLOR_RED, "Something went wrong!", COLOR_WHITE,
+                    MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(),
+                    MaterialTimelineView.Companion.getPOSITION_FIRST());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +35,28 @@ public class TimelineActivity extends AppCompatActivity {
 
 
         // programmatically added items
-        ArrayList<MaterialTimelineView> mtvs = new ArrayList<>();
+        try
+        {
+            ArrayList<MaterialTimelineView> mtvs = new ArrayList<>();
 
-        // set color in form of 0xAARRGGBB
-        /*mtvs.add(makeCard(COLOR_BY_STEP[1], "Programmatically", COLOR_BLACK,
-                MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
-                MaterialTimelineView.Companion.getPOSITION_FIRST()));
-        mtvs.add(makeCard(COLOR_BY_STEP[0], "Added", COLOR_WHITE,
-                MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(),
-                MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
-        mtvs.add(makeCard(COLOR_BY_STEP[5], "Items!", COLOR_BLACK,
-                MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
-                MaterialTimelineView.Companion.getPOSITION_LAST()));*/
+            mtvs.add(makeCard(1, "Programmatically", COLOR_BLACK,
+                    MaterialTimelineView.Companion.getPOSITION_FIRST()));
+            mtvs.add(makeLine("Added", COLOR_WHITE,
+                    MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
+            mtvs.add(makeCard(5, "Items!", COLOR_BLACK,
+                    MaterialTimelineView.Companion.getPOSITION_LAST()));
 
 
-        for (MaterialTimelineView mtv: mtvs)
-            addObj(mtv);
+            for (MaterialTimelineView mtv: mtvs)
+                addObj(mtv);
+        }
+        catch (Exception e)
+        {
+            addObj(RED_CARD);
+            addObj(makeLine(Log.getStackTraceString(e), COLOR_WHITE,
+                    MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
+
+        }
 
         // programmatically changing like this
         // MaterialTimelineView material_timeline_view2 = (MaterialTimelineView)findViewById(R.id.material_timeline_view2);
@@ -89,7 +101,7 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    public MaterialTimelineView makeCard(int step, String text, @ColorInt int textColor, int type, int position)
+    public MaterialTimelineView makeCard(int step, String text, @ColorInt int textColor, int position)
             throws IllegalArgumentException
     {
         int max = COLOR_BY_STEP.length - 1;
@@ -98,7 +110,12 @@ public class TimelineActivity extends AppCompatActivity {
             throw new IllegalArgumentException(String.format("step must be in [1, %d]", max));
         }
 
-        return makeObj(COLOR_BY_STEP[step], text, textColor, type, position);
+        return makeObj(COLOR_BY_STEP[step], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(), position);
+    }
+
+    public MaterialTimelineView makeLine(String text, @ColorInt int textColor, int position)
+    {
+        return makeObj(COLOR_BY_STEP[0], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(), position);
     }
 
     public void addObj(MaterialTimelineView mtv)
