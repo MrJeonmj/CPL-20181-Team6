@@ -165,14 +165,14 @@ public class Emergency_History extends AppCompatActivity {
 
                 mArrayList.add(hashMap);
             }
+//
+//            ListAdapter adapter = new SimpleAdapter(
+//                    Emergency_History.this, mArrayList, R.layout.item_list,
+//                    new String[]{TAG_ID,TAG_DATE, TAG_STEP},
+//                    new int[]{R.id.id, R.id.date, R.id.step}
+//            );
 
-            ListAdapter adapter = new SimpleAdapter(
-                    Emergency_History.this, mArrayList, R.layout.item_list,
-                    new String[]{TAG_ID,TAG_DATE, TAG_STEP},
-                    new int[]{R.id.id, R.id.date, R.id.step}
-            );
-
-            mlistView.setAdapter(adapter);
+//            mlistView.setAdapter(adapter);
 
         } catch (JSONException e) {
 

@@ -1,6 +1,7 @@
 package com.example.user.jolp_v0;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +31,21 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-/**
- * Created by kch on 2017. 9. 22..
- */
 
 public class Temp extends Fragment {
     View v;
@@ -44,12 +54,36 @@ public class Temp extends Fragment {
     MaterialCalendarView materialCalendarView;
     ArrayList<DayInfo> dayInfoArrayList = new ArrayList<>();
 
+    //server
+    private static String TAG = "phptest";
+    private static final String TAG_JSON="webnautes";
+    private static final String TAG_ID="ID";
+    private static final String TAG_BREATH="BREATH";
+    private static final String TAG_DATE="DATE";
+    ArrayList<HashMap<String, String>> mArrayList;
+    ArrayList<HashMap<String, String>> Datalist;
+    String mJsonString;
+    String id;
+
+    //ListView mlistView;
+    //
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         //inflate메소드는 XML데이터를 가져와서 실제 View객체로 만드는 작업을 합니다.
         v = inflater.inflate(R.layout.fragment_temp, container, false);
+
+        //SERVER
+        id = Main2Activity.id;
+        //mlistView = (ListView) findViewById(R.id.listView_main_list);
+        mArrayList = new ArrayList<>();
+
+        GetData task = new GetData();
+        task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
+        //
 
         materialCalendarView = (MaterialCalendarView)v.findViewById(R.id.calendarView);
 
@@ -149,6 +183,148 @@ public class Temp extends Fragment {
     public void addDayInfoArrayList(int importance, int color, int year, int month, int day) {
         DayInfo k = new DayInfo(importance,color,year,month,day);
         dayInfoArrayList.add(k);
+    }
+
+    private class GetData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String errorString = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            Log.d(TAG, "response  - " + result);
+
+
+            if (result == null){
+
+                //mTextViewResult.setText(errorString);
+            }
+            else {
+
+                mJsonString = result;
+                showResult();
+            }
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String serverURL = params[0];
+
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString().trim();
+
+
+            } catch (Exception e) {
+
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+
+                return null;
+            }
+
+        }
+    }
+
+
+    private void showResult(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+            for(int i=0;i<jsonArray.length();i++){
+
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String id = item.getString(TAG_ID);
+                String breath = item.getString(TAG_BREATH);
+                String date = item.getString(TAG_DATE);
+
+
+
+                HashMap<String,String> hashMap = new HashMap<>();
+
+                hashMap.put(TAG_ID, id);
+                hashMap.put(TAG_BREATH, breath);
+                hashMap.put(TAG_DATE, date);
+
+
+                mArrayList.add(hashMap);
+            }
+            for(int i=0;i<mArrayList.size();i++){
+                if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0){
+
+                }
+
+            }
+/*
+            ListAdapter adapter = new SimpleAdapter(
+                    getActivity(), mArrayList, R.layout.item_list,
+                    new String[]{TAG_ID,TAG_BREATH, TAG_DATE},
+                    new int[]{R.id.id,  R.id.breath, R.id.date}
+            );
+
+            mlistView.setAdapter(adapter);
+            */
+
+
+            Toast.makeText(getActivity(), mArrayList.get(0).get(0), Toast.LENGTH_SHORT).show();
+
+        } catch (JSONException e) {
+
+            Log.d(TAG, "showResult : ", e);
+        }
+
     }
 
 }

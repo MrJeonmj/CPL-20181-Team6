@@ -52,10 +52,13 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private String Message = "비상상황입니다."; // 문자 보낼 메시지
     private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
 
+    static String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        id = getIntent().getStringExtra("id");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
