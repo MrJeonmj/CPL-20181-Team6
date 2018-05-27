@@ -1,9 +1,13 @@
 package com.example.user.jolp_v0;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +23,21 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by kch on 2017. 9. 22..
@@ -52,7 +66,7 @@ public class Breath extends Fragment {
         SimpleDateFormat f;
         // SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss ");
 
-        // TODO: get actual data
+
         switch (dataGettingMode)
         {
             case DATA_GETTING_MODE_YEAR:
@@ -99,19 +113,22 @@ public class Breath extends Fragment {
         return r;
     }
 
+    private ArrayList<String> breathData = new ArrayList<>();
+
     private ArrayList<Entry> getEntries(int dataGettingMode)
     {
-        ArrayList<Entry> r = new ArrayList<>();
 
-        // TODO: get actual data
-        int[] data = {
-                73, 93, 94, 80, 78, 83, 79, 71, 83, 90,
-                94, 72, 83, 87, 89, 84, 70, 76, 92, 75,
-                85, 88, 94, 99, 82, 70, 98, 73, 91, 71,
-                81, 89, 87, 90, 79, 85, 77, 96, 93, 86,
-                74, 75, 92, 97, 97, 80, 82, 99, 94, 91,
-                91, 90, 70, 84, 93, 70, 88, 91, 71, 75
-        }; // randomly generated example data
+        ArrayList<Entry> r = new ArrayList<>();
+        // TODO: mArrayList -> breathData
+        /*for ()
+        {
+
+        }*/
+
+        String[] str_data = breathData.toArray(new String[breathData.size()]);
+        int[] data = new int[str_data.length];
+        for (int i = 0; i < data.length; ++i)
+            data[i] = Integer.parseInt(str_data[i]);
 
         switch (dataGettingMode)
         {
@@ -143,6 +160,129 @@ public class Breath extends Fragment {
 
         return r;
     }
+
+    private static String TAG = "phptest";
+    private static final String TAG_JSON="webnautes";
+    private static final String TAG_ID="ID";
+    private static final String TAG_DATE="DATE";
+    private static final String TAG_BREATH ="BREATH";
+
+    private ArrayList<HashMap<String, String>> mArrayList;
+    private String mJsonString;
+
+    private class GetData extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        String errorString = null;
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            Log.d(TAG, "response  - " + result);
+
+
+            if (result == null){
+
+                //mTextViewResult.setText(errorString);
+            }
+            else {
+
+                mJsonString = result;
+                showResult();
+            }
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String serverURL = params[0];
+
+
+            try {
+
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
+
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString().trim();
+
+
+            } catch (Exception e) {
+
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+
+                return null;
+            }
+        }
+    }
+
+
+    private void showResult(){
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+            for(int i=0;i<jsonArray.length();i++){
+
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String id = item.getString(TAG_ID);
+                String date = item.getString(TAG_DATE);
+                String breath = item.getString(TAG_BREATH);
+
+
+                HashMap<String,String> hashMap = new HashMap<>();
+
+                hashMap.put(TAG_ID, id);
+                hashMap.put(TAG_DATE, date);
+                hashMap.put(TAG_BREATH, breath);
+
+
+                mArrayList.add(hashMap);
+            }
+
+        } catch (JSONException e) {
+
+            Log.d(TAG, "showResult : ", e);
+        }
+
+    }
+
+
 
     private void initGraph()
     {
@@ -195,12 +335,19 @@ public class Breath extends Fragment {
         lineChart.animateXY(2000, 2000); //애니메이션 기능 활성화
         lineChart.invalidate();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-
+        Intent intent = getActivity().getIntent();
+        String id = (String) intent.getStringExtra("id");
         v = inflater.inflate(R.layout.fragment_breath, container, false);
+        mArrayList = new ArrayList<>();
+        GetData task = new GetData();
+        task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID=" + id); // TODO: error here
+
+
 
         Spinner spinner = (Spinner)v.findViewById(R.id.spinner2);
         spinner.setOnItemSelectedListener (new AdapterView.OnItemSelectedListener() {
@@ -226,6 +373,8 @@ public class Breath extends Fragment {
         labels = getLabels(DATA_GETTING_MODE_MONTH);
         entries = getEntries(DATA_GETTING_MODE_MONTH);
         initGraph();
+
+
         return v;
     }
 }
