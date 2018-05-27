@@ -27,13 +27,15 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".Login">
+        <activity android:name=".Loading"
+            android:screenOrientation="portrait"
+            android:theme="@style/loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Login">
         </activity>
         <activity android:name=".Join" />
         <activity android:name=".Emergency" />
@@ -41,21 +43,18 @@
         <activity android:name=".Emergency_History" />
         <activity
             android:name=".TimelineActivity"
-
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Main2Activity"
-
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Graph_Statistics" />
+
     </application>
 
 </manifest>
