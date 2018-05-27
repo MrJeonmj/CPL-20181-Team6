@@ -206,6 +206,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         } else if (id == R.id.nav_breath) {
             manager.beginTransaction().add(R.id.content_main, new Breath()).commit();
         } else if (id == R.id.nav_setting) {
+            Intent intent1 = new Intent(Main2Activity.this, User_Setting.class);
+            startActivity(intent1);
 
         } else if (id == R.id.nav_logout) {
             Intent intent1 = new Intent(Main2Activity.this, Login.class);
