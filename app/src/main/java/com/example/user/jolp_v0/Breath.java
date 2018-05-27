@@ -19,7 +19,11 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 
 /**
  * Created by kch on 2017. 9. 22..
@@ -41,36 +45,56 @@ public class Breath extends Fragment {
     private ArrayList<String> getLabels(int dataGettingMode)
     {
         ArrayList<String> r = new ArrayList<>();
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.setLenient(true);
+        SimpleDateFormat f;
+        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss ");
 
         // TODO: get actual data
         switch (dataGettingMode)
         {
             case DATA_GETTING_MODE_YEAR:
-                for (int i = 1; i <= 12; ++i)
-                    r.add(String.valueOf(i));
+                f = new SimpleDateFormat("yyyy/MM");
+                for (int i = 0; i < 12; ++i)
+                    cal.add(Calendar.MONTH, -1);
+                r.add(f.format(cal.getTime()));
+                Collections.reverse(r);
                 break;
 
             case DATA_GETTING_MODE_MONTH:
-                for (int i = 1; i <= 30; ++i)
-                    r.add("4/" + String.valueOf(i));
+                f = new SimpleDateFormat("MM/dd");
+                for (int i = 0; i < 30; ++i)
+                    cal.add(Calendar.DAY_OF_MONTH, -1);
+                    r.add(f.format(cal.getTime()));
+                Collections.reverse(r);
                 break;
 
             case DATA_GETTING_MODE_WEEK:
-                for (int i = 19; i <= 25; ++i)
-                    r.add("4/" + String.valueOf(i));
+                f = new SimpleDateFormat("MM/dd");
+                for (int i = 0; i < 7; ++i)
+                    cal.add(Calendar.DAY_OF_MONTH, -1);
+                r.add(f.format(cal.getTime()));
+                Collections.reverse(r);
                 break;
 
             case DATA_GETTING_MODE_DAY:
-                for (int i = 0; i <= 23; ++i)
-                    r.add(String.valueOf(i) + ":00");
+                f = new SimpleDateFormat("HH:mm");
+                for (int i = 0; i < 7; ++i)
+                    cal.add(Calendar.HOUR_OF_DAY, -1);
+                r.add(f.format(cal.getTime()));
+                Collections.reverse(r);
                 break;
 
             case DATA_GETTING_MODE_HOUR:
-                for (int i = 0; i <= 59; ++i)
-                    r.add("12:" + String.valueOf(i));
+                f = new SimpleDateFormat("HH:mm");
+                for (int i = 0; i < 60; ++i)
+                    cal.add(Calendar.MINUTE, -1);
+                r.add(f.format(cal.getTime()));
+                Collections.reverse(r);
                 break;
         }
-
 
         return r;
     }
