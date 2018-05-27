@@ -1,21 +1,12 @@
 package com.example.user.jolp_v0;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ActionBarOverlayLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -28,18 +19,11 @@ public class TimelineActivity extends AppCompatActivity {
 
     private static final int COLOR_WHITE = 0xffffffff;
     private static final int COLOR_BLACK = 0xff000000;
-    int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
-        Intent intent = getIntent();
-        year = (Integer) intent.getIntExtra("year",1);
-        month = (Integer) intent.getIntExtra("month",1);
-        day = (Integer) intent.getIntExtra("day",1);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,7 +32,7 @@ public class TimelineActivity extends AppCompatActivity {
         ArrayList<MaterialTimelineView> mtvs = new ArrayList<>();
 
         // set color in form of 0xAARRGGBB
-        mtvs.add(makeCard(COLOR_BY_STEP[1], "Programmatically", COLOR_BLACK,
+        /*mtvs.add(makeCard(COLOR_BY_STEP[1], "Programmatically", COLOR_BLACK,
                 MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
                 MaterialTimelineView.Companion.getPOSITION_FIRST()));
         mtvs.add(makeCard(COLOR_BY_STEP[0], "Added", COLOR_WHITE,
@@ -56,11 +40,11 @@ public class TimelineActivity extends AppCompatActivity {
                 MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
         mtvs.add(makeCard(COLOR_BY_STEP[5], "Items!", COLOR_BLACK,
                 MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(),
-                MaterialTimelineView.Companion.getPOSITION_LAST()));
+                MaterialTimelineView.Companion.getPOSITION_LAST()));*/
 
 
         for (MaterialTimelineView mtv: mtvs)
-            addCard(mtv);
+            addObj(mtv);
 
         // programmatically changing like this
         // MaterialTimelineView material_timeline_view2 = (MaterialTimelineView)findViewById(R.id.material_timeline_view2);
@@ -69,7 +53,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     // TODO: can these be private?
-    public MaterialTimelineView makeCard(@ColorInt int bgColor, String text, @ColorInt int textColor, int type, int position)
+    public MaterialTimelineView makeObj(@ColorInt int bgColor, String text, @ColorInt int textColor, int type, int position)
     {
         try
         {
@@ -105,7 +89,19 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    public void addCard(MaterialTimelineView mtv)
+    public MaterialTimelineView makeCard(int step, String text, @ColorInt int textColor, int type, int position)
+            throws IllegalArgumentException
+    {
+        int max = COLOR_BY_STEP.length - 1;
+        if (step < 1 || step > max)
+        {
+            throw new IllegalArgumentException(String.format("step must be in [1, %d]", max));
+        }
+
+        return makeObj(COLOR_BY_STEP[step], text, textColor, type, position);
+    }
+
+    public void addObj(MaterialTimelineView mtv)
     {
         LinearLayout timeline_linear = (LinearLayout)findViewById(R.id.timeline_linear);
         timeline_linear.addView(mtv);
