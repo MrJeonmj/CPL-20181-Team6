@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by kch on 2017. 9. 22..
@@ -179,6 +180,30 @@ public class Breath extends Fragment {
                 Collections.reverse(temp);
 
                 // get entries; TODO: average of each month for 12 months
+                double[] sums = new double[12];
+                int[] count = new int[12];
+                double[] averages = new double[12];
+                for (HashMap<String,String> h: mArrayList)
+                {
+                    try
+                    {
+                        String datestr = h.get(TAG_DATE); // 2018-05-27 01:21:15
+                        Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestr);
+                        long diff = accessTime.getTime() - d.getTime();
+                        // https://stackoverflow.com/questions/5351483/calculate-date-time-difference-in-java
+                        long diff_day = TimeUnit.MILLISECONDS.toDays(diff);
+
+                        if (diff_day <= 365)
+                        {
+                            // TODO
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
 
                 break;
 
@@ -234,7 +259,6 @@ public class Breath extends Fragment {
                 // get entries; TODO: average of each minute for 60 minutes
                 break;
         }
-
     }
 
     private void showResult(){
@@ -242,7 +266,7 @@ public class Breath extends Fragment {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-            for(int i=0;i<jsonArray.length();i++){
+            for(int i=0; i<jsonArray.length(); i++){
 
                 JSONObject item = jsonArray.getJSONObject(i);
 
@@ -326,8 +350,7 @@ public class Breath extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        Intent intent = getActivity().getIntent();
-        String id = (String) intent.getStringExtra("id");
+        String id = Main2Activity.id;
         v = inflater.inflate(R.layout.fragment_breath, container, false);
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
