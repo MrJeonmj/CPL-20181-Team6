@@ -56,7 +56,8 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Graph_Statistics" />
-        <activity android:name=".User_Setting"></activity>
+        <activity android:name=".User_Setting" />
+        <activity android:name=".Alarm"></activity>
     </application>
 
 </manifest>
