@@ -187,8 +187,6 @@ public class TimelineActivity extends AppCompatActivity
             int pos = MaterialTimelineView.Companion.getPOSITION_MIDDLE();
             if (i == 0)
                 pos = MaterialTimelineView.Companion.getPOSITION_FIRST();
-            else if (i == alCardData.size() - 1)
-                pos = MaterialTimelineView.Companion.getPOSITION_LAST();
 
             int lv = alCardData.get(i).getSteplevel();
             if (1 <= lv && lv <= 5)
@@ -200,7 +198,9 @@ public class TimelineActivity extends AppCompatActivity
             }
 
             // add line
-            if (i != alCardData.size() - 1)
+            if (i == alCardData.size() - 1)
+                addObj(makeLine("", COLOR_WHITE, MaterialTimelineView.Companion.getPOSITION_LAST()));
+            else
                 addObj(makeLine("", COLOR_WHITE, MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
         }
 
@@ -212,17 +212,15 @@ public class TimelineActivity extends AppCompatActivity
 
     }
 
-    public MaterialTimelineView makeObj(@ColorInt int bgColor, String text, @ColorInt int textColor, int type, int position)
+    public MaterialTimelineView makeObj(@ColorInt int bgColor, String text, @ColorInt int textColor, int type, int position, int height)
     {
         try
         {
             MaterialTimelineView mtv = new MaterialTimelineView(this);
 
-            // size
-            float timeline_card_height = getResources().getDimension(R.dimen.timeline_card_height);
             // float mp = getResources().getDimension();
             MaterialTimelineView.LayoutParams mtv_para = new MaterialTimelineView.LayoutParams
-                    (MaterialTimelineView.LayoutParams.MATCH_PARENT, (int) timeline_card_height);
+                    (MaterialTimelineView.LayoutParams.MATCH_PARENT, height);
             mtv.setLayoutParams(mtv_para);
 
             // properties
@@ -256,13 +254,16 @@ public class TimelineActivity extends AppCompatActivity
         {
             throw new IllegalArgumentException(String.format("step must be in [1, %d]; %d received", max, step));
         }
+        // size
+        int height = (int) getResources().getDimension(R.dimen.timeline_card_height);
 
-        return makeObj(COLOR_BY_STEP[step], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(), position);
+        return makeObj(COLOR_BY_STEP[step], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_ITEM(), position, height);
     }
 
     public MaterialTimelineView makeLine(String text, @ColorInt int textColor, int position)
     {
-        return makeObj(COLOR_BY_STEP[0], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(), position);
+        int height = (int) getResources().getDimension(R.dimen.timeline_line_height);
+        return makeObj(COLOR_BY_STEP[0], text, textColor, MaterialTimelineView.Companion.getTIMELINE_TYPE_LINE(), position, height);
     }
 
     public void addObj(MaterialTimelineView mtv)
