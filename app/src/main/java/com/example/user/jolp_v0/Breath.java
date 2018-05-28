@@ -220,7 +220,11 @@ public class Breath extends Fragment
         lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
         lineDataSet.setCircleColorHole(Color.BLUE);
         lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+
         lineChart.setDescription("");
+        lineChart.setDrawBorders(true);
+        lineChart.setBorderColor(0xFF000000);
+        // lineChart.setMaxVisibleValueCount(maxVisibleValueCount);
 
         LineData lineData = new LineData(labels, lineDataSet);
 
