@@ -25,6 +25,10 @@
                 android:icon="@drawable/ic_setting"
                 android:title="사용자 설정" />
             <item
+                android:id="@+id/nav_asetting"
+                android:icon="@drawable/ic_setting"
+                android:title="알림 설정" />
+            <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_back"
                 android:title="로그아웃" />
