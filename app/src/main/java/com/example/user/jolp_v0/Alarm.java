@@ -14,18 +14,22 @@ import android.widget.TextView;
 public class Alarm extends AppCompatActivity {
     TextView tv;
     NumberPicker np;
-    EditText et;
+    int step;
+    //EditText et;
+
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+        step = getIntent().getIntExtra("step",1);
         np = findViewById(R.id.setsecond);
         np.setMinValue(1);
         np.setMaxValue(60);
         np.setValue(0);
-        et = findViewById(R.id.vibrateNum);
+        //et = findViewById(R.id.vibrateNum);
+
 
         np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -37,21 +41,13 @@ public class Alarm extends AppCompatActivity {
         Button button = (Button) findViewById(R.id.test);
         button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                int repeat;
-                int myNum = 0;
-                myNum = Integer.parseInt(et.getText().toString());
-                long[] pattern = {500, np.getValue()*1000};
-                for(repeat = 0; repeat < myNum ;repeat++) {
-                    vibrator.vibrate(pattern, -1);
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                        Step.step_sec[step] = np.getValue();
+                        finish();
                   }
             }
         );
     }
+
+
+
 }
