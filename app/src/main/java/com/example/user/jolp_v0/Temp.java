@@ -159,6 +159,7 @@ public class Temp extends Fragment {
         long lastRefresh = sp.getLong("refresh", 0);
         long now = System.currentTimeMillis();
         if (lastRefresh == 0 || now - lastRefresh > 5000) {
+
             GetData task = new GetData();
             task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
             sp.edit().putLong("refresh", now).commit();
@@ -304,6 +305,9 @@ public class Temp extends Fragment {
 
 
     private void showResult(){
+        date_Data.clear();
+        step_Data.clear();
+        mArrayList.clear();
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -327,6 +331,7 @@ public class Temp extends Fragment {
 
                 mArrayList.add(hashMap);
             }
+
             SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             int tag = -1;
