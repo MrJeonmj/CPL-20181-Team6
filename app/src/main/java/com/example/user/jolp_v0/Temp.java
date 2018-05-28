@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class Temp extends Fragment
@@ -79,7 +80,7 @@ public class Temp extends Fragment
         task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID=" + id);
         //
 
-        materialCalendarView = (MaterialCalendarView) v.findViewById(R.id.calendarView);
+        materialCalendarView = v.findViewById(R.id.calendarView);
 
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -121,7 +122,7 @@ public class Temp extends Fragment
             }
         });
 
-        Button buttonjoin = (Button) v.findViewById(R.id.button_graph);
+        Button buttonjoin = v.findViewById(R.id.button_graph);
         buttonjoin.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -214,6 +215,7 @@ public class Temp extends Fragment
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
+
             for (int i = 0; i < jsonArray.length(); i++)
             {
 
@@ -234,7 +236,7 @@ public class Temp extends Fragment
 
                 mArrayList.add(hashMap);
             }
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
             int tag = -1;
             //Date temp = transFormat.parse("201702011535");
@@ -267,9 +269,10 @@ public class Temp extends Fragment
                 }
 
             }
-            SimpleDateFormat year = new SimpleDateFormat("yyyy");
-            SimpleDateFormat month = new SimpleDateFormat("MM");
-            SimpleDateFormat day = new SimpleDateFormat("dd");
+
+            SimpleDateFormat year = new SimpleDateFormat("yyyy", Locale.KOREA);
+            SimpleDateFormat month = new SimpleDateFormat("MM", Locale.KOREA);
+            SimpleDateFormat day = new SimpleDateFormat("dd", Locale.KOREA);
             Date temp1 = new Date();
             if (date_Data.size() > 1)
             {
