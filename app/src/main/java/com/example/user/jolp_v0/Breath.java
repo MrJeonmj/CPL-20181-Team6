@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -54,14 +55,14 @@ public class Breath extends Fragment
     private static final String TAG_JSON = "webnautes";
     private static final String TAG_ID = "ID";
     private static final String TAG_DATE = "DATE";
-    private static final String TAG_BREATH = "BREATH";
+    private static final String TAG_TEMP = "TEMP";
     // private final int DATA_GETTING_RECENT = 5;
     // private final int DATA_GETTING_RECENT_LENGTH = 50;
     private static String TAG = "phptest";
-    View v;
+    private View v;
     private ArrayList<String> labels;
     private ArrayList<Entry> entries;
-    private ArrayList<String> breathData = new ArrayList<>();
+    // private ArrayList<String> tempData = new ArrayList<>();
     private ArrayList<HashMap<String, String>> mArrayList;
     private String mJsonString;
 
@@ -74,8 +75,6 @@ public class Breath extends Fragment
                 = {Calendar.MONTH, Calendar.DAY_OF_YEAR, Calendar.DAY_OF_YEAR, Calendar.HOUR_OF_DAY, Calendar.MINUTE};
 
         // initializations
-        ArrayList<String> alTemp = new ArrayList<>();
-
         Calendar calNow = Calendar.getInstance();
         calNow.setTime(now);
         calNow.setLenient(true);
@@ -88,16 +87,14 @@ public class Breath extends Fragment
         SimpleDateFormat f = new SimpleDateFormat(sdfPatterns[dataGettingMode], Locale.KOREA);
         for (int i = 0; i < lengths[dataGettingMode]; ++i)
         {
-            alTemp.add(f.format(calTemp.getTime()));
+            labels.add(f.format(calTemp.getTime()));
             calTemp.add(intervals[dataGettingMode], -1);
         }
-        Collections.reverse(alTemp);
-        labels.addAll(alTemp);
+        Collections.reverse(labels);
 
         // get entries; average of each month for 12 months
         double[] sums = new double[lengths[dataGettingMode]];
         int[] count = new int[lengths[dataGettingMode]];
-        double[] averages = new double[lengths[dataGettingMode]];
         for (HashMap<String, String> h : mArrayList)
         {
             try
@@ -138,10 +135,12 @@ public class Breath extends Fragment
 
                 if (0 <= diff && diff < lengths[dataGettingMode])
                 {
-                    sums[diff] += Double.parseDouble(h.get(TAG_BREATH));
+                    double d = Double.parseDouble(h.get(TAG_TEMP));
+                    sums[diff] += d;
                     ++count[diff];
+                    Log.d("Breath", String.format(Locale.KOREA, "diff: %d, value = %f, count = %d, current avg = %f",
+                            diff, d, count[diff], sums[diff] / count[diff]));
                 }
-
             }
             catch (Exception e)
             {
@@ -151,7 +150,9 @@ public class Breath extends Fragment
         }
 
         for (int i = 0; i < lengths[dataGettingMode]; ++i)
-            averages[i] = sums[i] / count[i];
+        {
+            entries.add(new Entry((float) (sums[i] / count[i]), lengths[dataGettingMode] - 1 - i));
+        }
     }
 
     private void getLabelsAndEntries(int dataGettingMode)
@@ -163,11 +164,6 @@ public class Breath extends Fragment
         Calendar calNow = Calendar.getInstance();
         calNow.setTime(now);
         calNow.setLenient(true);
-
-        String[] str_data = breathData.toArray(new String[breathData.size()]);
-        int[] data = new int[str_data.length];
-        for (int i = 0; i < data.length; ++i)
-            data[i] = Integer.parseInt(str_data[i]);
 
         makeLabelsAndEntries(now, dataGettingMode);
     }
@@ -186,18 +182,21 @@ public class Breath extends Fragment
 
                 String id = item.getString(TAG_ID);
                 String date = item.getString(TAG_DATE);
-                String breath = item.getString(TAG_BREATH);
+                String temp = item.getString(TAG_TEMP);
 
 
                 HashMap<String, String> hashMap = new HashMap<>();
 
                 hashMap.put(TAG_ID, id);
                 hashMap.put(TAG_DATE, date);
-                hashMap.put(TAG_BREATH, breath);
+                hashMap.put(TAG_TEMP, temp);
 
 
                 mArrayList.add(hashMap);
             }
+
+            getLabelsAndEntries(DATA_GETTING_MODE_YEAR);
+            initGraph();
 
         }
         catch (JSONException e)
@@ -210,7 +209,7 @@ public class Breath extends Fragment
 
     private void initGraph()
     {
-        LineChart lineChart = (LineChart) v.findViewById(R.id.chart);
+        LineChart lineChart = v.findViewById(R.id.chart);
         LineDataSet lineDataSet = new LineDataSet(entries, "심박수");
         lineDataSet.setColors(ColorTemplate.PASTEL_COLORS);
         //lineDataSet.setDrawCubic(true);
@@ -261,15 +260,17 @@ public class Breath extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState)
     {
-
-        String id = Main2Activity.id;
         v = inflater.inflate(R.layout.fragment_breath, container, false);
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
-        task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID=" + id);
+        String id = Main2Activity.id;
+        task.execute("http://show8258.ipdisk.co.kr:8000/templist.php?ID=" + id);
 
-
-        Spinner spinner = (Spinner) v.findViewById(R.id.spinner2);
+        Spinner spinner = v.findViewById(R.id.spinner2);
+        String values[] = getResources().getStringArray(R.array.graph_scope);
+        /*ArrayAdapter<String> adapter= new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);*/
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -284,16 +285,23 @@ public class Breath extends Fragment
             @Override
             public void onNothingSelected(AdapterView<?> parent)
             {
-                getLabelsAndEntries(DATA_GETTING_MODE_MONTH);
+                getLabelsAndEntries(DATA_GETTING_MODE_YEAR);
             }
         });
 
         // default
-        getLabelsAndEntries(DATA_GETTING_MODE_MONTH);
+        getLabelsAndEntries(DATA_GETTING_MODE_YEAR);
         initGraph();
 
-
         return v;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+
     }
 
     private class GetData extends AsyncTask<String, Void, String>
@@ -307,7 +315,7 @@ public class Breath extends Fragment
             super.onPreExecute();
 
             progressDialog = ProgressDialog.show(getActivity(),
-                    "Please Wait", null, true, true);
+                    "Please Wait", "Loading...", true, true);
         }
 
         @Override
@@ -330,6 +338,7 @@ public class Breath extends Fragment
 
                 mJsonString = result;
                 showResult();
+
             }
         }
 
@@ -392,5 +401,12 @@ public class Breath extends Fragment
                 return null;
             }
         }
+
+        /*protected void onDestroyView()
+        {
+            Log.d("Breath", "Breath.onDestroy()");
+            entries.clear();
+            labels.clear();
+        }*/
     }
 }
