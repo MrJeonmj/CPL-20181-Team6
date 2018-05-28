@@ -229,6 +229,7 @@ public class Temp extends Fragment
                 hashMap.put(TAG_ID, id);
                 hashMap.put(TAG_BREATH, breath);
                 hashMap.put(TAG_DATE, date);
+                Log.println(Log.DEBUG, "Temp", "" + id + " " + breath + " " + date);
 
 
                 mArrayList.add(hashMap);
@@ -283,34 +284,31 @@ public class Temp extends Fragment
                     sum += step_Data.get(i);
                     temp1 = date_Data.get(i);
                 }
-                else
+                else if (0 < sum && sum < 20)
                 {
-                    if (0 < sum && sum < 20)
-                    {
-                        addDayInfoArrayList(0, Color.GREEN, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
-                    }
-                    else if (20 <= sum && sum < 40)
-                    {
-                        addDayInfoArrayList(0, Color.BLUE, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
-                    }
-                    else if (40 <= sum && sum < 60)
-                    {
-                        addDayInfoArrayList(0, Color.YELLOW, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
-                    }
-                    else if (60 <= sum && sum < 80)
-                    {
-                        addDayInfoArrayList(0, Color.BLACK, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
-                    }
-                    else if (80 <= sum)
-                    {
-                        addDayInfoArrayList(0, Color.RED, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
-                    }
-                    sum = (int) (long) step_Data.get(i);
-                    temp1 = date_Data.get(i);
+                    addDayInfoArrayList(0, Color.GREEN, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
                 }
-
-
+                else if (20 <= sum && sum < 40)
+                {
+                    addDayInfoArrayList(0, Color.BLUE, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                }
+                else if (40 <= sum && sum < 60)
+                {
+                    addDayInfoArrayList(0, Color.YELLOW, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                }
+                else if (60 <= sum && sum < 80)
+                {
+                    addDayInfoArrayList(0, Color.BLACK, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                }
+                else if (80 <= sum)
+                {
+                    addDayInfoArrayList(0, Color.RED, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
+                }
+                sum = (int) (long) step_Data.get(i);
+                temp1 = date_Data.get(i);
             }
+
+
             if (0 < sum && sum < 20)
             {
                 addDayInfoArrayList(0, Color.GREEN, Integer.parseInt(year.format(temp1)), Integer.parseInt(month.format(temp1)), Integer.parseInt(day.format(temp1)));
@@ -355,11 +353,13 @@ public class Temp extends Fragment
 
             // Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
-        } catch (JSONException e)
+        }
+        catch (JSONException e)
         {
 
             Log.d(TAG, "showResult : ", e);
-        } catch (ParseException e)
+        }
+        catch (ParseException e)
         {
             e.printStackTrace();
         }
@@ -456,7 +456,8 @@ public class Temp extends Fragment
                 return sb.toString().trim();
 
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
 
                 Log.d(TAG, "InsertData: Error ", e);

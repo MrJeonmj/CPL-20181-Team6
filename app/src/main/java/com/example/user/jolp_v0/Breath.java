@@ -266,7 +266,7 @@ public class Breath extends Fragment
         v = inflater.inflate(R.layout.fragment_breath, container, false);
         mArrayList = new ArrayList<>();
         GetData task = new GetData();
-        task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID=" + id); // TODO: error here
+        task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID=" + id);
 
 
         Spinner spinner = (Spinner) v.findViewById(R.id.spinner2);
