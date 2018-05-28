@@ -68,8 +68,10 @@ public class Breath extends Fragment
     private void makeLabelsAndEntries(Date now, int dataGettingMode)
     {
         // constants
-        final String[] sdfPatterns = {"yyyy/MM", "MM/dd", "MM/dd", "hh:00", "hh:mm"};
+        final String[] sdfPatterns = {"yyyy/MM", "yy/MM/dd", "MM/dd", "dd/HH:00", "dd/HH:mm"};
         final int[] lengths = {12, 30, 7, 24, 60};
+        final int[] intervals
+                = {Calendar.MONTH, Calendar.DAY_OF_YEAR, Calendar.DAY_OF_YEAR, Calendar.HOUR_OF_DAY, Calendar.MINUTE};
 
         // initializations
         ArrayList<String> alTemp = new ArrayList<>();
@@ -87,7 +89,7 @@ public class Breath extends Fragment
         for (int i = 0; i < lengths[dataGettingMode]; ++i)
         {
             alTemp.add(f.format(calTemp.getTime()));
-            calTemp.add(Calendar.MONTH, -1);
+            calTemp.add(intervals[dataGettingMode], -1);
         }
         Collections.reverse(alTemp);
         labels.addAll(alTemp);
@@ -107,8 +109,7 @@ public class Breath extends Fragment
                 calThen.setLenient(true);
 
                 int diff;
-                long diffTemp = now.getTime() - then.getTime();
-                ; // in milliseconds
+                long diffTemp = now.getTime() - then.getTime(); // in milliseconds
 
                 switch (dataGettingMode)
                 {
@@ -141,7 +142,8 @@ public class Breath extends Fragment
                     ++count[diff];
                 }
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Log.println(Log.ERROR, "Breath", e.getClass().toString());
                 e.printStackTrace();
@@ -197,7 +199,8 @@ public class Breath extends Fragment
                 mArrayList.add(hashMap);
             }
 
-        } catch (JSONException e)
+        }
+        catch (JSONException e)
         {
 
             Log.d(TAG, "showResult : ", e);
@@ -321,7 +324,8 @@ public class Breath extends Fragment
             {
 
                 //mTextViewResult.setText(errorString);
-            } else
+            }
+            else
             {
 
                 mJsonString = result;
@@ -356,7 +360,8 @@ public class Breath extends Fragment
                 if (responseStatusCode == HttpURLConnection.HTTP_OK)
                 {
                     inputStream = httpURLConnection.getInputStream();
-                } else
+                }
+                else
                 {
                     inputStream = httpURLConnection.getErrorStream();
                 }
@@ -377,7 +382,8 @@ public class Breath extends Fragment
                 return sb.toString().trim();
 
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
 
                 Log.d(TAG, "InsertData: Error ", e);
