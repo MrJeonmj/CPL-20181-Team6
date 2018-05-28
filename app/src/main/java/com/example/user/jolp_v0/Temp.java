@@ -435,10 +435,10 @@ public class Temp extends Fragment {
             mlistView.setAdapter(adapter);
             */
 
-//            for(int i = index;i<step_Data.size();i++){
-//                Step.vib_occur((int) (long) step_Data.get(i),vib);
-//            }
-//            index = step_Data.size();
+            for(int i = index;i<step_Data.size();i++){
+                Step.vib_occur((int) (long) step_Data.get(i),vib);
+            }
+            index = step_Data.size();
             Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {

@@ -42,7 +42,7 @@
                     android:layout_marginTop="50dp"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="Biotracker" />
+                    android:text="App Name" />
 
                 <ImageButton
                     android:id="@+id/emg_button"

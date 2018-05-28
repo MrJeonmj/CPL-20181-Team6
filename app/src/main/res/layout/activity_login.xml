@@ -24,7 +24,7 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:src="@drawable/emg_button"
+            android:src="@drawable/cardimg"
             android:visibility="visible"
             android:layout_weight="0.48" />
 

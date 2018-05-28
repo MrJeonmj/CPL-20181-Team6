@@ -63,9 +63,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent1 = new Intent(getApplicationContext(),UpdateService.class);
-        startService(intent1);
-
         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         timeTv = (TextView) findViewById(R.id.timeTv);
         //실시간 표시 기능
@@ -111,8 +108,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 return false;
             }
         });
-
-
     }
     //비상상황 알림
     @RequiresApi(api = Build.VERSION_CODES.O)

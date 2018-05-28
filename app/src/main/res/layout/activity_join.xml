@@ -22,7 +22,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="0dp"
-            android:src="@drawable/emg_button" />
+            android:src="@drawable/cardimg" />
 
 
         <!--  Name Label -->
