@@ -1,5 +1,6 @@
 package com.example.user.jolp_v0;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,22 +35,58 @@ public class TimelineActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String xtitle = String.format("%d년 %d월 %d일", 1972, 11, 21);
-        // TODO: error here!
+        // get intent
+        int[] ymd = new int[3];
+        if (savedInstanceState == null)
+        {
+            Bundle extras = getIntent().getExtras();
+            if(extras != null)
+            {
+                ymd[0] = extras.getInt("year");
+                ymd[1] = extras.getInt("month");
+                ymd[2] = extras.getInt("day");
+            }
+        }
+        else
+        {
+            ymd[0] = (int) savedInstanceState.getSerializable("year");
+            ymd[1] = (int) savedInstanceState.getSerializable("month");
+            ymd[2] = (int) savedInstanceState.getSerializable("day");
+        }
+
+        String xtitle = String.format("%d년 %d월 %d일", ymd[0], ymd[1], ymd[2]);
+        // Toast.makeText(this.getApplicationContext(), xtitle, Toast.LENGTH_SHORT).show();
+
+        Log.println(Log.DEBUG, "TimelineActivity", "TimelineActivity");
         try
         {
-            getActionBar().setTitle(xtitle);
-            getSupportActionBar().setTitle(xtitle);
+            android.support.v7.app.ActionBar sab = getSupportActionBar();
+            Log.println(Log.DEBUG, "TimelineActivity", sab.toString());
+            sab.setTitle(xtitle);
         }
         catch (Exception e)
         {
             String error = Log.getStackTraceString(e);
-            Log.println(Log.DEBUG, "xtitle", error);
+            Log.println(Log.ERROR, "TimelineActivity", error);
+
+        }
+
+        try
+        {
+            android.support.v7.app.ActionBar sab = getSupportActionBar();
+            Log.println(Log.DEBUG, "TimelineActivity", sab.toString());
+            sab.setTitle(xtitle);
+        }
+        catch (Exception e)
+        {
+            String error = Log.getStackTraceString(e);
+            Log.println(Log.ERROR, "TimelineActivity", error);
 
         }
 
 
         // programmatically added items
+        // TODO: get data from server and then make cards from them
         try
         {
             ArrayList<MaterialTimelineView> mtvs = new ArrayList<>();
@@ -81,7 +119,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
-    // TODO: can these be private?
     public MaterialTimelineView makeObj(@ColorInt int bgColor, String text, @ColorInt int textColor, int type, int position)
     {
         try

@@ -126,7 +126,7 @@ public class Temp extends Fragment {
                 intent1.putExtra("month",Month);
                 intent1.putExtra("day",Day);
 
-                Toast.makeText(getActivity().getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getActivity().getApplicationContext(), shot_Day , Toast.LENGTH_SHORT).show();
                 startActivity(intent1);
             }
         });
@@ -427,7 +427,7 @@ public class Temp extends Fragment {
             */
 
 
-            Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
 
