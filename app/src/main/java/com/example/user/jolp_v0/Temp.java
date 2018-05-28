@@ -2,9 +2,11 @@ package com.example.user.jolp_v0;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -51,6 +53,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
 
 public class Temp extends Fragment {
     View v;
@@ -70,6 +74,8 @@ public class Temp extends Fragment {
     static ArrayList<Long> step_Data = new ArrayList<>();
     String mJsonString;
     String id;
+    static int index=0;
+    Vibrator vib;
 
     //ListView mlistView;
     //
@@ -81,7 +87,7 @@ public class Temp extends Fragment {
 
         //inflate메소드는 XML데이터를 가져와서 실제 View객체로 만드는 작업을 합니다.
         v = inflater.inflate(R.layout.fragment_temp, container, false);
-
+        vib = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         //SERVER
         id = Main2Activity.id;
         //mlistView = (ListView) findViewById(R.id.listView_main_list);
@@ -429,7 +435,10 @@ public class Temp extends Fragment {
             mlistView.setAdapter(adapter);
             */
 
-
+            for(int i = index;i<step_Data.size();i++){
+                Step.vib_occur((int) (long) step_Data.get(i),vib);
+            }
+            index = step_Data.size();
             Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
