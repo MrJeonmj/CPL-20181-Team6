@@ -214,9 +214,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             finish();
             startActivity(intent1);
         } else if (id == R.id.nav_asetting) {
-            Intent intent1 = new Intent(Main2Activity.this, User_Setting.class);
+            Intent intent1 = new Intent(Main2Activity.this, Step.class);
             startActivity(intent1);
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
