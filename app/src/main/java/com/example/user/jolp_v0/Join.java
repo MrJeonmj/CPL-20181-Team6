@@ -1,5 +1,6 @@
 package com.example.user.jolp_v0;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.AsyncTask;
@@ -114,9 +115,16 @@ public class Join extends FragmentActivity {
 
     protected Dialog onCreateDialog(int id) {
 
+//        int datePickerThemeResId = 0;
+//        if (android.os.Build.VERSION.SDK_INT >= 21) {
+//            datePickerThemeResId = android.R.style.Widget_Material_NumberPicker;
+//        }
+
+
+
         DatePickerDialog dpd = new DatePickerDialog
                 (Join.this, // 현재화면의 제어권자
-                        new DatePickerDialog.OnDateSetListener() {
+                        AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,new DatePickerDialog.OnDateSetListener() {
                             public void onDateSet(DatePicker view,
                                                   int year, int monthOfYear,int dayOfMonth) {
                                 String month;
