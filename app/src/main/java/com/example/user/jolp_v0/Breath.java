@@ -53,11 +53,11 @@ public class Breath extends Fragment {
     private ArrayList<String> breathData = new ArrayList<>();
 
     // constants
-    private final int DATA_GETTING_MODE_YEAR = 0;
-    private final int DATA_GETTING_MODE_MONTH = 1;
-    private final int DATA_GETTING_MODE_WEEK = 2;
-    private final int DATA_GETTING_MODE_DAY = 3;
-    private final int DATA_GETTING_MODE_HOUR = 4;
+    private static final int DATA_GETTING_MODE_YEAR = 0;
+    private static final int DATA_GETTING_MODE_MONTH = 1;
+    private static final int DATA_GETTING_MODE_WEEK = 2;
+    private static final int DATA_GETTING_MODE_DAY = 3;
+    private static final int DATA_GETTING_MODE_HOUR = 4;
     // private final int DATA_GETTING_RECENT = 5;
     // private final int DATA_GETTING_RECENT_LENGTH = 50;
 
@@ -70,11 +70,23 @@ public class Breath extends Fragment {
     private ArrayList<HashMap<String, String>> mArrayList;
     private String mJsonString;
 
-    private class GetData extends AsyncTask<String, Void, String> {
+    private class GetData extends AsyncTask<String, Void, String>
+    {
         ProgressDialog progressDialog;
         String errorString = null;
+
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(getActivity(),
+                    "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
             super.onPostExecute(result);
 
             progressDialog.dismiss();
@@ -82,11 +94,13 @@ public class Breath extends Fragment {
             Log.d(TAG, "response  - " + result);
 
 
-            if (result == null){
+            if (result == null)
+            {
 
                 //mTextViewResult.setText(errorString);
             }
-            else {
+            else
+            {
 
                 mJsonString = result;
                 showResult();
@@ -95,12 +109,14 @@ public class Breath extends Fragment {
 
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(String... params)
+        {
 
             String serverURL = params[0];
 
 
-            try {
+            try
+            {
 
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -115,10 +131,12 @@ public class Breath extends Fragment {
                 Log.d(TAG, "response code - " + responseStatusCode);
 
                 InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                if (responseStatusCode == HttpURLConnection.HTTP_OK)
+                {
                     inputStream = httpURLConnection.getInputStream();
                 }
-                else{
+                else
+                {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
@@ -129,18 +147,18 @@ public class Breath extends Fragment {
                 StringBuilder sb = new StringBuilder();
                 String line;
 
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null)
+                {
                     sb.append(line);
                 }
 
-
                 bufferedReader.close();
-
-
                 return sb.toString().trim();
 
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
 
                 Log.d(TAG, "InsertData: Error ", e);
                 errorString = e.toString();
@@ -150,140 +168,109 @@ public class Breath extends Fragment {
         }
     }
 
+    private void makeLabelsAndEntries(Date now, int dataGettingMode)
+    {
+        // constants
+        final String[] sdfPatterns = {"yyyy/MM", "MM/dd", "MM/dd", "hh:00", "hh:mm"};
+        final int[] lengths = {12, 30, 7, 24, 60};
+
+        // initializations
+        ArrayList<String> alTemp = new ArrayList<>();
+
+        Calendar calNow = Calendar.getInstance();
+        calNow.setTime(now);
+        calNow.setLenient(true);
+
+        Calendar calTemp = Calendar.getInstance();
+        calTemp.setTime(now);
+        calTemp.setLenient(true);
+
+        // get labels
+        SimpleDateFormat f = new SimpleDateFormat(sdfPatterns[dataGettingMode], Locale.KOREA);
+        for (int i = 0; i < lengths[dataGettingMode]; ++i)
+        {
+            alTemp.add(f.format(calTemp.getTime()));
+            calTemp.add(Calendar.MONTH, -1);
+        }
+        Collections.reverse(alTemp);
+        labels.addAll(alTemp);
+
+        // get entries; average of each month for 12 months
+        double[] sums = new double[lengths[dataGettingMode]];
+        int[] count = new int[lengths[dataGettingMode]];
+        double[] averages = new double[lengths[dataGettingMode]];
+        for (HashMap<String,String> h: mArrayList)
+        {
+            try
+            {
+                String datestr = h.get(TAG_DATE); // like 2018-05-27 01:21:15
+                Date then = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).parse(datestr);
+                Calendar calThen = Calendar.getInstance();
+                calThen.setTime(then);
+                calThen.setLenient(true);
+
+                int diff;
+                long diffTemp = now.getTime() - then.getTime();; // in milliseconds
+
+                switch (dataGettingMode)
+                {
+                    case DATA_GETTING_MODE_YEAR: // `diff` is difference in months
+                        diff = (calNow.get(Calendar.YEAR) - calThen.get(Calendar.YEAR)) * 12
+                                        + (calNow.get(Calendar.MONTH) - calThen.get(Calendar.MONTH));
+                        break;
+
+                    case DATA_GETTING_MODE_MONTH:
+                    case DATA_GETTING_MODE_WEEK: // in both cases,`diff` is difference in days
+                        diff = (int) ((diffTemp / (1000 * 60 * 60 * 24)));
+                        break;
+
+                    case DATA_GETTING_MODE_DAY: // `diff` is difference in hours
+                        diff = (int) ((diffTemp / (1000 * 60 * 60)));
+
+                        break;
+
+                    case DATA_GETTING_MODE_HOUR: // `diff` is difference in minutes
+                        diff = (int) ((diffTemp / (1000 * 60)));
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("Wrong `dataGettingMode` specified");
+                }
+
+                if (0 <= diff && diff < lengths[dataGettingMode])
+                {
+                    sums[diff] += Double.parseDouble(h.get(TAG_BREATH));
+                    ++count[diff];
+                }
+
+            }
+            catch (Exception e)
+            {
+                Log.println(Log.ERROR, "Breath", e.getClass().toString());
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < lengths[dataGettingMode]; ++i)
+            averages[i] = sums[i] / count[i];
+    }
+
     private void getLabelsAndEntries(int dataGettingMode)
     {
         labels = new ArrayList<>();
         entries = new ArrayList<>();
-        ArrayList<String> temp = new ArrayList<>();
 
-        Date accessTime = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(accessTime);
-        cal.setLenient(true);
-        SimpleDateFormat f;
+        Date now = new Date();
+        Calendar calNow = Calendar.getInstance();
+        calNow.setTime(now);
+        calNow.setLenient(true);
 
         String[] str_data = breathData.toArray(new String[breathData.size()]);
         int[] data = new int[str_data.length];
         for (int i = 0; i < data.length; ++i)
             data[i] = Integer.parseInt(str_data[i]);
 
-        if (dataGettingMode == DATA_GETTING_MODE_YEAR)
-        {
-            // get labels
-            f = new SimpleDateFormat("yyyy/MM", Locale.KOREA);
-            for (int i = 0; i < 12; ++i)
-            {
-                temp.add(f.format(cal.getTime()));
-                cal.add(Calendar.MONTH, -1);
-            }
-            Collections.reverse(temp);
-
-            // get entries; TODO: average of each month for 12 months
-            double[] sums = new double[12];
-            int[] count = new int[12];
-            double[] averages = new double[12];
-            for (HashMap<String,String> h: mArrayList)
-            {
-                try
-                {
-                    String datestr = h.get(TAG_DATE); // 2018-05-27 01:21:15
-                    Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).parse(datestr);
-                    long diff = accessTime.getTime() - d.getTime();
-                    // https://stackoverflow.com/questions/5351483/calculate-date-time-difference-in-java
-                    long diff_day = TimeUnit.MILLISECONDS.toDays(diff);
-                    // int diff_mon = (int);
-
-                    if (diff_day <= 365)
-                    {
-                        // TODO
-                    }
-
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        else if (dataGettingMode == DATA_GETTING_MODE_MONTH)
-        {
-            // get labels
-            f = new SimpleDateFormat("MM/dd", Locale.KOREA);
-            for (int i = 0; i < 30; ++i)
-            {
-                temp.add(f.format(cal.getTime()));
-                cal.add(Calendar.DAY_OF_MONTH, -1);
-            }
-            Collections.reverse(temp);
-
-            // get entries; TODO: average of each day for 30 days
-        }
-        else if (dataGettingMode == DATA_GETTING_MODE_WEEK)
-        {
-            // get labels
-            f = new SimpleDateFormat("MM/dd", Locale.KOREA);
-            for (int i = 0; i < 7; ++i)
-            {
-                temp.add(f.format(cal.getTime()));
-                cal.add(Calendar.DAY_OF_MONTH, -1);
-            }
-            Collections.reverse(temp);
-
-            // get entries; TODO: average of each day for 7 days
-        }
-        else if (dataGettingMode == DATA_GETTING_MODE_DAY)
-        {
-
-        }
-        else if (dataGettingMode == DATA_GETTING_MODE_HOUR)
-        {
-
-        }
-        else
-        {
-
-        }
-
-        switch (dataGettingMode)
-        {
-            case DATA_GETTING_MODE_YEAR:
-
-
-                break;
-
-            case DATA_GETTING_MODE_MONTH:
-
-
-            case DATA_GETTING_MODE_WEEK:
-
-                break;
-
-            case DATA_GETTING_MODE_DAY:
-                // get labels
-                f = new SimpleDateFormat("HH:mm", Locale.KOREA);
-                for (int i = 0; i < 7; ++i)
-                {
-                    temp.add(f.format(cal.getTime()));
-                    cal.add(Calendar.HOUR_OF_DAY, -1);
-                }
-                Collections.reverse(temp);
-
-                // get entries; TODO: average of each hour for 24 hours
-                break;
-
-            case DATA_GETTING_MODE_HOUR:
-                // get labels
-                f = new SimpleDateFormat("HH:mm", Locale.KOREA);
-                for (int i = 0; i < 60; ++i)
-                {
-                    temp.add(f.format(cal.getTime()));
-                    cal.add(Calendar.MINUTE, -1);
-                }
-                Collections.reverse(temp);
-
-                // get entries; TODO: average of each minute for 60 minutes
-                break;
-        }
+        makeLabelsAndEntries(now, dataGettingMode);
     }
 
     private void showResult(){
