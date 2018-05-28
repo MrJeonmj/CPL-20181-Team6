@@ -167,70 +167,95 @@ public class Breath extends Fragment {
         for (int i = 0; i < data.length; ++i)
             data[i] = Integer.parseInt(str_data[i]);
 
+        if (dataGettingMode == DATA_GETTING_MODE_YEAR)
+        {
+            // get labels
+            f = new SimpleDateFormat("yyyy/MM", Locale.KOREA);
+            for (int i = 0; i < 12; ++i)
+            {
+                temp.add(f.format(cal.getTime()));
+                cal.add(Calendar.MONTH, -1);
+            }
+            Collections.reverse(temp);
+
+            // get entries; TODO: average of each month for 12 months
+            double[] sums = new double[12];
+            int[] count = new int[12];
+            double[] averages = new double[12];
+            for (HashMap<String,String> h: mArrayList)
+            {
+                try
+                {
+                    String datestr = h.get(TAG_DATE); // 2018-05-27 01:21:15
+                    Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).parse(datestr);
+                    long diff = accessTime.getTime() - d.getTime();
+                    // https://stackoverflow.com/questions/5351483/calculate-date-time-difference-in-java
+                    long diff_day = TimeUnit.MILLISECONDS.toDays(diff);
+                    // int diff_mon = (int);
+
+                    if (diff_day <= 365)
+                    {
+                        // TODO
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (dataGettingMode == DATA_GETTING_MODE_MONTH)
+        {
+            // get labels
+            f = new SimpleDateFormat("MM/dd", Locale.KOREA);
+            for (int i = 0; i < 30; ++i)
+            {
+                temp.add(f.format(cal.getTime()));
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+            }
+            Collections.reverse(temp);
+
+            // get entries; TODO: average of each day for 30 days
+        }
+        else if (dataGettingMode == DATA_GETTING_MODE_WEEK)
+        {
+            // get labels
+            f = new SimpleDateFormat("MM/dd", Locale.KOREA);
+            for (int i = 0; i < 7; ++i)
+            {
+                temp.add(f.format(cal.getTime()));
+                cal.add(Calendar.DAY_OF_MONTH, -1);
+            }
+            Collections.reverse(temp);
+
+            // get entries; TODO: average of each day for 7 days
+        }
+        else if (dataGettingMode == DATA_GETTING_MODE_DAY)
+        {
+
+        }
+        else if (dataGettingMode == DATA_GETTING_MODE_HOUR)
+        {
+
+        }
+        else
+        {
+
+        }
+
         switch (dataGettingMode)
         {
             case DATA_GETTING_MODE_YEAR:
-                // get labels
-                f = new SimpleDateFormat("yyyy/MM", Locale.KOREA);
-                for (int i = 0; i < 12; ++i)
-                {
-                    temp.add(f.format(cal.getTime()));
-                    cal.add(Calendar.MONTH, -1);
-                }
-                Collections.reverse(temp);
 
-                // get entries; TODO: average of each month for 12 months
-                double[] sums = new double[12];
-                int[] count = new int[12];
-                double[] averages = new double[12];
-                for (HashMap<String,String> h: mArrayList)
-                {
-                    try
-                    {
-                        String datestr = h.get(TAG_DATE); // 2018-05-27 01:21:15
-                        Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datestr);
-                        long diff = accessTime.getTime() - d.getTime();
-                        // https://stackoverflow.com/questions/5351483/calculate-date-time-difference-in-java
-                        long diff_day = TimeUnit.MILLISECONDS.toDays(diff);
-
-                        if (diff_day <= 365)
-                        {
-                            // TODO
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
 
                 break;
 
             case DATA_GETTING_MODE_MONTH:
-                // get labels
-                f = new SimpleDateFormat("MM/dd", Locale.KOREA);
-                for (int i = 0; i < 30; ++i)
-                {
-                    temp.add(f.format(cal.getTime()));
-                    cal.add(Calendar.DAY_OF_MONTH, -1);
-                }
-                Collections.reverse(temp);
 
-                // get entries; TODO: average of each day for 30 days
-                break;
 
             case DATA_GETTING_MODE_WEEK:
-                // get labels
-                f = new SimpleDateFormat("MM/dd", Locale.KOREA);
-                for (int i = 0; i < 7; ++i)
-                {
-                    temp.add(f.format(cal.getTime()));
-                    cal.add(Calendar.DAY_OF_MONTH, -1);
-                }
-                Collections.reverse(temp);
 
-                // get entries; TODO: average of each day for 7 days
                 break;
 
             case DATA_GETTING_MODE_DAY:

@@ -43,7 +43,8 @@ public class TimelineActivity extends AppCompatActivity {
         catch (Exception e)
         {
             String error = Log.getStackTraceString(e);
-            
+            Log.println(Log.DEBUG, "xtitle", error);
+
         }
 
 
