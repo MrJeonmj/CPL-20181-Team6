@@ -304,6 +304,9 @@ public class Temp extends Fragment {
 
 
     private void showResult(){
+        mArrayList.clear();
+        date_Data.clear();
+        step_Data.clear();
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
