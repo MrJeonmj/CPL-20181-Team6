@@ -1,0 +1,43 @@
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#041A37">
+    <!-- opens a subscreen of settings -->
+
+        <PreferenceCategory
+            android:key="usercategory"
+            android:title="ID" >
+            <Preference
+                android:key="idvalue"
+                android:title="" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="namecategory"
+            android:title="이름" >
+            <Preference
+                android:key="namevalue"
+                android:title="" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="uc"
+            android:title="설정" >
+
+            <EditTextPreference
+                android:key="phonevalue"
+                android:title="연락처" />
+
+            <EditTextPreference
+                android:key="homevalue"
+                android:title="주소" />
+
+            <EditTextPreference
+                android:key="birthvalue"
+                android:title="생년월일" />
+
+            <EditTextPreference
+                android:key="pwvalue"
+                android:title="비밀먼호" />
+        </PreferenceCategory>
+
+
+</PreferenceScreen>

@@ -23,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -107,6 +108,17 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 return false;
             }
         });
+        Intent intent1 = new Intent(this,Temp.class);
+        startService(intent1);
+        while(true){
+            try {
+                Thread.sleep(2000);
+                Log.d(Integer.toString(Temp.date_Data.size()),"kkk");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
     //비상상황 알림
     @RequiresApi(api = Build.VERSION_CODES.O)
