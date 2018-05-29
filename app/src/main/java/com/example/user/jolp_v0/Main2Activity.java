@@ -1,6 +1,7 @@
 package com.example.user.jolp_v0;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -217,6 +218,8 @@ public class Main2Activity
     @Override
     public void onBackPressed()
     {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
@@ -224,7 +227,16 @@ public class Main2Activity
         }
         else
         {
-            super.onBackPressed();
+            if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+                moveTaskToBack(true);
+                ServiceThread.index = -1;
+                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+
+            } else {
+                backPressedTime = tempTime;
+                Toast.makeText(this, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

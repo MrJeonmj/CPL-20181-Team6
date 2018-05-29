@@ -66,8 +66,6 @@ public class Maincontent2 extends Fragment {
         Timer timer = new Timer();
         timer.schedule(timerTask,500,1000);
 
-
-
         return v;
     }
     //이미지 버튼 클릭시 수행
