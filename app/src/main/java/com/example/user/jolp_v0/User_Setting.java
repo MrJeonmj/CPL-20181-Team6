@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 public class User_Setting extends PreferenceActivity
@@ -32,9 +33,8 @@ public class User_Setting extends PreferenceActivity
                 int index = listPreference.findIndexOfValue(stringValue);
 
                 // Set the summary to reflect the new value.
-                preference.setSummary(index >= 0? listPreference.getEntries()[index]: null);
-            }
-            else
+                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+            } else
             {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
@@ -42,6 +42,8 @@ public class User_Setting extends PreferenceActivity
             }
             //num = sharedPref.getString("partnerphonevalue","");
             //Log.d(num+"*******","kk");
+
+            Log.d("User_Setting", "Preference changed.");
 
             return true;
         }
@@ -104,5 +106,6 @@ public class User_Setting extends PreferenceActivity
 
 
         }
+
     }
 }
