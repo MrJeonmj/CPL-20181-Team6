@@ -36,7 +36,7 @@
 
             <EditTextPreference
                 android:key="pwvalue"
-                android:title="비밀먼호" />
+                android:title="비밀번호" />
         </PreferenceCategory>
 
 
