@@ -157,7 +157,7 @@ public class TimelineActivity extends AppCompatActivity
             int lv = alCardData.get(i).getSteplevel();
             if (1 <= lv && lv <= 5)
             {
-                addObj(makeCard(lv, String.format(Locale.KOREA, "%02d:%02d:%02d level %d",
+                addObj(makeCard(lv, String.format(Locale.KOREA, "     %02d:%02d:%02d      level %d",
                         alCardData.get(i).getHour(), alCardData.get(i).getMinute(),
                         alCardData.get(i).getSecond(), lv),
                         COLOR_BLACK, pos));
@@ -197,6 +197,7 @@ public class TimelineActivity extends AppCompatActivity
             // text
             TextView tv = new TextView(this);
             tv.setText(text);
+            tv.setTextSize(20);
             tv.setTextColor(textColor);
             //ViewGroup.LayoutParams paramsExample = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             mtv.addView(tv);
