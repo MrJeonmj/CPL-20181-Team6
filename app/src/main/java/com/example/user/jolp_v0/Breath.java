@@ -187,9 +187,9 @@ public class Breath extends Fragment
         TextView avgV = v.findViewById(R.id.text_avgbeat);
         TextView maxV = v.findViewById(R.id.text_maxbeat);
 
-        minV.setText(minValue == Double.MAX_VALUE? "-":String.format("%.1f", minValue));
+        minV.setText(minValue == Double.MAX_VALUE? "-": String.format("%.1f", minValue));
         avgV.setText(Double.isNaN(avgValue)? "-": String.format("%.1f", avgValue));
-        maxV.setText(maxValue == Double.MIN_VALUE? "-":String.format("%.1f", maxValue));
+        maxV.setText(maxValue == Double.MIN_VALUE? "-": String.format("%.1f", maxValue));
     }
 
     private void getLabelsAndEntries(int dataGettingMode)
