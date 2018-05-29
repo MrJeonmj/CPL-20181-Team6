@@ -152,6 +152,8 @@ public class Temp extends Fragment {
     }
     @Override
     public void onResume() {
+         GetData task = new GetData();
+         task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
 //        addDayInfoArrayList(0,Color.RED,2018,5,17);
 //        addDayInfoArrayList(0,Color.GRAY,2018,5,11);
 //        addDayInfoArrayList(0,Color.BLUE,2018,5,10);
@@ -160,14 +162,14 @@ public class Temp extends Fragment {
 //            dates.add(k.getCal());
 //            materialCalendarView.addDecorator(new EventDecorator(k.getColor(), dates));
 //        }
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        long lastRefresh = sp.getLong("refresh", 0);
-        long now = System.currentTimeMillis();
-        if (lastRefresh == 0 || now - lastRefresh > 5000) {
-            GetData task = new GetData();
-            task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
-            sp.edit().putLong("refresh", now).commit();
-        }
+//        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        long lastRefresh = sp.getLong("refresh", 0);
+//        long now = System.currentTimeMillis();
+//        if (lastRefresh == 0 || now - lastRefresh > 5000) {
+//            GetData task = new GetData();
+//            task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+id);
+//            sp.edit().putLong("refresh", now).commit();
+//        }
         super.onResume();
     }
 //
@@ -438,7 +440,7 @@ public class Temp extends Fragment {
 //                Step.vib_occur((int) (long) step_Data.get(i),vib);
 //            }
 //            index = step_Data.size();
-            Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
 
