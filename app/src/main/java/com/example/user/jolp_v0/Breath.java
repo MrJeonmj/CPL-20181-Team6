@@ -152,6 +152,9 @@ public class Breath extends Fragment
                     avgValue += d; // now acting as "total sum"; later this will be divided into `totalCount`
                     ++count[diff];
 
+                    //Log.d("Breath", String.format(Locale.KOREA, "d = %f, minValue = %f, maxValue = %f",
+                    //      d, minValue, maxValue));
+
                     // determine minimum
                     if (d < minValue)
                         minValue = d;
@@ -165,8 +168,7 @@ public class Breath extends Fragment
                 }
 
 
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 Log.println(Log.ERROR, "Breath", e.getClass().toString());
                 e.printStackTrace();
@@ -187,9 +189,10 @@ public class Breath extends Fragment
         TextView avgV = v.findViewById(R.id.text_avgbeat);
         TextView maxV = v.findViewById(R.id.text_maxbeat);
 
-        minV.setText(minValue == Double.MAX_VALUE? "-": String.format("%.1f", minValue));
-        avgV.setText(Double.isNaN(avgValue)? "-": String.format("%.1f", avgValue));
-        maxV.setText(maxValue == Double.MIN_VALUE? "-": String.format("%.1f", maxValue));
+
+        minV.setText(minValue == Double.MAX_VALUE ? "0" : String.format("%.1f", minValue));
+        avgV.setText(Double.isNaN(avgValue) ? "0" : String.format("%.1f", avgValue));
+        maxV.setText(maxValue == Double.MIN_VALUE ? "0" : String.format("%.1f", maxValue));
     }
 
     private void getLabelsAndEntries(int dataGettingMode)
@@ -235,8 +238,7 @@ public class Breath extends Fragment
             getLabelsAndEntries(DATA_GETTING_MODE_YEAR);
             initGraph();
 
-        }
-        catch (JSONException e)
+        } catch (JSONException e)
         {
 
             Log.d(TAG, "showResult : ", e);
@@ -373,8 +375,7 @@ public class Breath extends Fragment
             {
 
                 //mTextViewResult.setText(errorString);
-            }
-            else
+            } else
             {
 
                 mJsonString = result;
@@ -410,8 +411,7 @@ public class Breath extends Fragment
                 if (responseStatusCode == HttpURLConnection.HTTP_OK)
                 {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else
+                } else
                 {
                     inputStream = httpURLConnection.getErrorStream();
                 }
@@ -432,8 +432,7 @@ public class Breath extends Fragment
                 return sb.toString().trim();
 
 
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
 
                 Log.d(TAG, "InsertData: Error ", e);
