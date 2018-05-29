@@ -1,6 +1,7 @@
 package com.example.user.jolp_v0;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -90,8 +91,9 @@ public class User_Setting extends PreferenceActivity
 
             SharedPreferences.Editor editor = sharedPref.edit();
             // editor.putInt("mode", 1);
-            editor.putString("idvalue", CurrentUserInfo.getId()); //키값, 저장값
-            editor.putString("namevalue", CurrentUserInfo.getName());
+            Intent intent = getActivity().getIntent();
+            editor.putString("idvalue", intent.getStringExtra("id")); //키값, 저장값
+            editor.putString("namevalue", intent.getStringExtra("name"));
             // editor.putString("phonevalue", "010");
             editor.apply();
 
