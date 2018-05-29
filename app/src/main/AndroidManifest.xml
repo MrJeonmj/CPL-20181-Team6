@@ -58,6 +58,11 @@
         <activity android:name=".Graph_Statistics" />
         <activity android:name=".User_Setting" />
         <activity android:name=".Alarm"></activity>
+        <service
+            android:name=".UpdateService"
+            android:enabled="true" />
+
+
     </application>
 
 </manifest>

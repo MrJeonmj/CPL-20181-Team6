@@ -10,9 +10,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class User_Setting extends PreferenceActivity {
+    static String num;
+    static SharedPreferences prefer;
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -31,11 +34,14 @@ public class User_Setting extends PreferenceActivity {
                                 ? listPreference.getEntries()[index]
                                 : null);
 
+
             } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
             }
+            //num = prefer.getString("partnerphonevalue","");
+            //Log.d(num+"*******","kk");
             return true;
         }
     };
@@ -55,7 +61,7 @@ public class User_Setting extends PreferenceActivity {
             // guidelines.
 
 
-            SharedPreferences prefer = PreferenceManager
+            prefer = PreferenceManager
                     .getDefaultSharedPreferences(getActivity());
 
             SharedPreferences.Editor editor = prefer.edit();
@@ -65,6 +71,8 @@ public class User_Setting extends PreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("namevalue"));
             bindPreferenceSummaryToValue(findPreference("idvalue"));
+
+
 
             Toast.makeText(getActivity(), prefer.getString("phonevalue",""), Toast.LENGTH_SHORT).show();
 
