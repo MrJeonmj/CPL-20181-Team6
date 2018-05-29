@@ -134,7 +134,7 @@ public class Main2Activity
                 // 선택 처리
                 switch (item.getItemId())
                 {
-                    case R.id.nav_temp:
+                    case R.id.nav_breath:
                         manager.beginTransaction().add(R.id.content_main, new Temp()).commit();
 
                         return true;
@@ -142,7 +142,7 @@ public class Main2Activity
                         manager.beginTransaction().replace(R.id.content_main, new Maincontent2()).commit();
 
                         return true;
-                    case R.id.nav_breath:
+                    case R.id.nav_temp:
                         manager.beginTransaction().replace(R.id.content_main, new Breath()).commit();
 
                         return true;

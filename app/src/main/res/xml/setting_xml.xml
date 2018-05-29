@@ -36,6 +36,9 @@
             <EditTextPreference
                 android:key="pwvalue"
                 android:title="비밀번호" />
+            <EditTextPreference
+                android:key="devicevalue"
+                android:title="디바이스 일련번호" />
         </PreferenceCategory>
 
 
