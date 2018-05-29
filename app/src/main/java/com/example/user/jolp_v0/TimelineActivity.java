@@ -144,15 +144,15 @@ public class TimelineActivity extends AppCompatActivity
 
             if (stepTime == 0)
                 continue;
-            else if (0 < stepTime && stepTime < 20)
+            else if (stepTime < Step.step_sec[1])
                 stepLevel = 1;
-            else if (20 <= stepTime && stepTime < 40)
+            else if (stepTime < Step.step_sec[2])
                 stepLevel = 2;
-            else if (40 <= stepTime && stepTime < 60)
+            else if (stepTime < Step.step_sec[3])
                 stepLevel = 3;
-            else if (60 <= stepTime && stepTime < 80)
+            else if (stepTime < Step.step_sec[4])
                 stepLevel = 4;
-            else if (80 <= stepTime)
+            else
                 stepLevel = 5;
 
             CardData cd = new CardData
