@@ -89,8 +89,10 @@ public class User_Setting extends PreferenceActivity
                     .getDefaultSharedPreferences(getActivity());
 
             SharedPreferences.Editor editor = sharedPref.edit();
+            // editor.putInt("mode", 1);
             editor.putString("idvalue", "abc"); //키값, 저장값
-            editor.putString("phonevalue", "010");
+            editor.putString("namevalue", "def");
+            // editor.putString("phonevalue", "010");
             editor.apply();
 
             bindPreferenceSummaryToValue(findPreference("namevalue"));
