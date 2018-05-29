@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,10 @@ public class ServiceThread extends Thread{
     ArrayList<HashMap<String, String>> mArrayList;
     String mJsonString;
     static int index=-1;
+    int kk = -1;
+    int tag=-1;
+    int gg=0;
+    Date temp = new Date();
 
 
 
@@ -63,9 +68,62 @@ public class ServiceThread extends Thread{
         while(isRun){
             handler.sendEmptyMessage(0);//쓰레드에 있는 핸들러에게 메세지를 보냄
             try{
-                Thread.sleep(1000); //10초씩 쉰다.
-                GetData task = new GetData();
-                task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id+"&INDEX="+index);
+                //Thread.sleep(5000); //10초씩 쉰다.
+
+
+
+                String serverURL = "http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id+"&INDEX="+index;
+
+
+
+
+                    URL url = new URL(serverURL);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+
+                    httpURLConnection.setReadTimeout(5000);
+                    httpURLConnection.setConnectTimeout(5000);
+                    httpURLConnection.connect();
+
+
+                    int responseStatusCode = httpURLConnection.getResponseCode();
+                    Log.d(TAG, "response code - " + responseStatusCode);
+
+                    InputStream inputStream;
+                    if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                        inputStream = httpURLConnection.getInputStream();
+                    }
+                    else{
+                        inputStream = httpURLConnection.getErrorStream();
+                    }
+
+
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+
+                    while((line = bufferedReader.readLine()) != null){
+                        sb.append(line);
+                    }
+
+
+                    bufferedReader.close();
+
+                    mJsonString = sb.toString().trim();
+                    showResult();
+
+
+                   // return sb.toString().trim();
+
+
+
+
+
+
+                //GetData task = new GetData();
+                //task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id+"&INDEX="+index);
                 //index = Integer.parseInt(Main2Activity.pref.getString("SET_1",Integer.toString(index)));
 
                 //Main2Activity.editor.putString("SET_1",Integer.toString(index));
@@ -74,7 +132,100 @@ public class ServiceThread extends Thread{
         }
     }
 
-    private class GetData extends AsyncTask<String, Void, String> {
+
+
+    private void showResult(){
+        mArrayList.clear();
+        //Temp.date_Data.clear();
+        //Temp.step_Data.clear();
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+            int j;
+            for(j=0;j<jsonArray.length();j++){
+
+                JSONObject item = jsonArray.getJSONObject(j);
+
+                String id = item.getString(TAG_ID);
+                String breath = item.getString(TAG_BREATH);
+                String date = item.getString(TAG_DATE);
+
+
+
+                HashMap<String,String> hashMap = new HashMap<>();
+
+                hashMap.put(TAG_ID, id);
+                hashMap.put(TAG_BREATH, breath);
+                hashMap.put(TAG_DATE, date);
+
+
+                mArrayList.add(hashMap);
+            }
+            JSONObject item = jsonArray.getJSONObject(j-1);
+            Step.step_sec[1] = Integer.parseInt(item.getString(TAG_STEP1));
+            Step.step_sec[2] = Integer.parseInt(item.getString(TAG_STEP2));
+            Step.step_sec[3] = Integer.parseInt(item.getString(TAG_STEP3));
+            Step.step_sec[4] = Integer.parseInt(item.getString(TAG_STEP4));
+            Step.step_sec[5] = Integer.parseInt(item.getString(TAG_STEP5));
+            //index = Integer.parseInt(item.getString(TAG_INDEX));
+            if(kk == -1){
+                index = Integer.parseInt(item.getString(TAG_INDEX));
+                Temp.step_Data.clear();
+                Temp.date_Data.clear();
+                kk=1;
+            }
+
+
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+           //tag = -1;
+            //Date temp = transFormat.parse("201702011535");
+
+
+            int k;
+            for(k=gg;k<mArrayList.size();k++){
+                if(Double.parseDouble(mArrayList.get(k).get(TAG_BREATH)) == 0.0 && tag == 1){
+
+                }
+                else if(Double.parseDouble(mArrayList.get(k).get(TAG_BREATH)) == 0.0){
+                    temp = transFormat.parse(mArrayList.get(k).get(TAG_DATE));
+                    Temp.date_Data.add(temp);
+                    tag = 1;
+                }
+                else if(Double.parseDouble(mArrayList.get(k).get(TAG_BREATH)) != 0.0 && tag == 1){
+                    long second = (transFormat.parse(mArrayList.get(k).get(TAG_DATE)).getTime()-temp.getTime())/1000;
+                    Temp.step_Data.add(second);
+                    tag = -1;
+                }
+//                if((mArrayList.size()-1)==k && tag == 1){
+//                    long second = (transFormat.parse(mArrayList.get(k).get(TAG_DATE)).getTime()-temp.getTime())/1000;
+//                    Temp.step_Data.add(second);
+//                    tag = -1;
+//                }
+
+            }
+            gg = k;
+            int i;
+            for(i = index;i < Temp.step_Data.size();i++){
+                Step.vib_occur((int) (long) Temp.step_Data.get(i),UpdateService.vib);
+                //Toast.makeText(get, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                //Step.vib_occur(1000,UpdateService.vib);
+            }
+            index = Temp.step_Data.size();
+            //GetData1 task1 = new GetData1();
+            //task1.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id+"&INDEX="+index);
+
+
+        } catch (JSONException e) {
+
+            Log.d(TAG, "showResult : ", e);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class GetData1 extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         String errorString = null;
 
@@ -103,7 +254,7 @@ public class ServiceThread extends Thread{
             else {
 
                 mJsonString = result;
-                showResult();
+                showResult1();
             }
         }
 
@@ -166,82 +317,7 @@ public class ServiceThread extends Thread{
     }
 
 
-    private void showResult(){
-        mArrayList.clear();
-        Temp.date_Data.clear();
-        Temp.step_Data.clear();
-        try {
-            JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
-            int j;
-            for(j=0;j<jsonArray.length();j++){
-
-                JSONObject item = jsonArray.getJSONObject(j);
-
-                String id = item.getString(TAG_ID);
-                String breath = item.getString(TAG_BREATH);
-                String date = item.getString(TAG_DATE);
-
-
-
-                HashMap<String,String> hashMap = new HashMap<>();
-
-                hashMap.put(TAG_ID, id);
-                hashMap.put(TAG_BREATH, breath);
-                hashMap.put(TAG_DATE, date);
-
-
-                mArrayList.add(hashMap);
-            }
-            JSONObject item = jsonArray.getJSONObject(j-1);
-            Step.step_sec[1] = Integer.parseInt(item.getString(TAG_STEP1));
-            Step.step_sec[2] = Integer.parseInt(item.getString(TAG_STEP2));
-            Step.step_sec[3] = Integer.parseInt(item.getString(TAG_STEP3));
-            Step.step_sec[4] = Integer.parseInt(item.getString(TAG_STEP4));
-            Step.step_sec[5] = Integer.parseInt(item.getString(TAG_STEP5));
-            index = Integer.parseInt(item.getString(TAG_INDEX));
-
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            int tag = -1;
-            //Date temp = transFormat.parse("201702011535");
-            Date temp = new Date();
-
-
-            for(int i=0;i<mArrayList.size();i++){
-                if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0 && tag == 1){
-
-                }
-                else if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) == 0.0){
-                    temp = transFormat.parse(mArrayList.get(i).get(TAG_DATE));
-                    Temp.date_Data.add(temp);
-                    tag = 1;
-                }
-                else if(Double.parseDouble(mArrayList.get(i).get(TAG_BREATH)) != 0.0 && tag == 1){
-                    long second = (transFormat.parse(mArrayList.get(i).get(TAG_DATE)).getTime()-temp.getTime())/1000;
-                    Temp.step_Data.add(second);
-                    tag = -1;
-                }
-                if((mArrayList.size()-1)==i && tag == 1){
-                    long second = (transFormat.parse(mArrayList.get(i).get(TAG_DATE)).getTime()-temp.getTime())/1000;
-                    Temp.step_Data.add(second);
-                    tag = -1;
-                }
-
-            }
-
-            for(int i = index;i<Temp.step_Data.size();i++){
-                Step.vib_occur((int) (long) Temp.step_Data.get(i),UpdateService.vib);
-            }
-            index = Temp.step_Data.size();
-
-
-        } catch (JSONException e) {
-
-            Log.d(TAG, "showResult : ", e);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    private void showResult1(){
 
     }
 }
