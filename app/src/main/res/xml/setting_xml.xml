@@ -23,6 +23,10 @@
             android:title="설정" >
 
             <EditTextPreference
+                android:key="partnerphonevalue"
+                android:title="보호자연락처" />
+
+            <EditTextPreference
                 android:key="phonevalue"
                 android:title="연락처" />
 
@@ -36,7 +40,7 @@
 
             <EditTextPreference
                 android:key="pwvalue"
-                android:title="비밀먼호" />
+                android:title="비밀번호" />
         </PreferenceCategory>
 
 

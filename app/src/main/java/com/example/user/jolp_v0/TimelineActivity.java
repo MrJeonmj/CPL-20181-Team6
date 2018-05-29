@@ -275,7 +275,7 @@ public class TimelineActivity extends AppCompatActivity
     @Override
     protected void onDestroy()
     {
-        // TODO: test
+        // actually these are redundant
         Log.d("TimelineActivity", "onDestroy()");
 
         step_Data.clear();
