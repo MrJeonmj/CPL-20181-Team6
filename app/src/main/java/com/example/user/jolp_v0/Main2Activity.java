@@ -83,9 +83,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         navigationView.setNavigationItemSelectedListener(this);
 
         BottomNavigationView bottomavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        // BottomNavigationViewHelperでアイテムのサイズ、アニメーションを調整
+        // BottomNavigationViewHelper 에서 아이템 사이즈와 애니메이션 조정
         BottomNavigationViewHelper.disableShiftMode(bottomavigation);
-        // BottomNavigationViewを選択したときのリスナー
+        // BottomNavigationView 를 선택했을 때의 Listener
         bottomavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

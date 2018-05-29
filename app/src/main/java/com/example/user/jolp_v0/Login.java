@@ -118,6 +118,7 @@ public class Login extends FragmentActivity {
                 startActivity(intent1);
                 eid.setText("");
                 epw.setText("");
+                CurrentUserInfo.setIdAndName(id);
                 //finish();
             }
             else{
