@@ -28,7 +28,7 @@ public class Alarm extends AppCompatActivity {
         np = findViewById(R.id.setsecond);
         np.setMinValue(1);
         np.setMaxValue(60);
-        np.setValue(0);
+        np.setValue(1);
         //et = findViewById(R.id.vibrateNum);
 
 

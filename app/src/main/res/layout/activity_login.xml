@@ -11,12 +11,13 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
+        android:paddingTop="56dp"
         android:weightSum="1">
 
         <ImageView
@@ -24,37 +25,40 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
+            android:layout_weight="0.48"
             android:src="@drawable/emg_button"
-            android:visibility="visible"
-            android:layout_weight="0.48" />
+            android:visibility="visible" />
 
         <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/login_id"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/login_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:textColor="#ffffff"
                 android:hint="ID"
-                />
+                android:inputType="textEmailAddress"
+                android:textColor="#ffffff" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/login_pw"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/login_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#ffffff"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:textColor="#ffffff" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -66,8 +70,8 @@
             android:layout_marginTop="24dp"
             android:background="#cc1d1d"
             android:padding="12dp"
-            android:textColor="#ffffff"
-            android:text="Login" />
+            android:text="Login"
+            android:textColor="#ffffff" />
 
 
         <Button
@@ -77,8 +81,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:textColor="#ffffff"
             android:text="No account yet? Create one"
+            android:textColor="#ffffff"
             android:textSize="16dip"
             android:visibility="visible" />
 

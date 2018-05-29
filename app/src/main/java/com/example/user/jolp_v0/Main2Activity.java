@@ -1,6 +1,7 @@
 package com.example.user.jolp_v0;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Notification;
@@ -34,6 +35,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ import java.util.TimerTask;
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     TextView timeTv;
+    Timer mTimer;
     InputMethodManager imm;
     PendingIntent sentPI;
     private final long FINISH_INTERVAL_TIME = 2000;
@@ -54,7 +57,17 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
 
     static String id;
-
+    //실시간 표시 함수
+    private Handler mHandler = new Handler();
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            Date rightNow = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat(
+                    "yyyy.MM.dd hh:mm:ss ");
+            String dateString = formatter.format(rightNow);
+            timeTv.setText(dateString);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +83,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         timeTv = (TextView) findViewById(R.id.timeTv);
         //실시간 표시 기능
         MainTimerTask timerTask = new MainTimerTask();
-        Timer timer = new Timer();
-        timer.schedule(timerTask,500,1000);
+        mTimer = new Timer();
+        mTimer.schedule(timerTask,500,1000);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -111,6 +124,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 return false;
             }
         });
+
 
 
     }
@@ -168,22 +182,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             Toast.makeText(this,"전송을 완료하였습니다",Toast.LENGTH_LONG).show();
         }
     }
-    //실시간 표시 함수
-    private Handler mHandler = new Handler();
-    private Runnable mUpdateTimeTask = new Runnable() {
-        public void run() {
-            Date rightNow = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat(
-                    "yyyy.MM.dd hh:mm:ss ");
-            String dateString = formatter.format(rightNow);
-            timeTv.setText(dateString);
-        }
-    };
-    class MainTimerTask extends TimerTask {
-        public void run() {
-            mHandler.post(mUpdateTimeTask);
-        }
-    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -227,5 +226,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    class MainTimerTask extends TimerTask {
+        public void run() {
+            mHandler.post(mUpdateTimeTask);
+        }
     }
 }

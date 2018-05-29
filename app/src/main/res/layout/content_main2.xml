@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
 
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
@@ -24,31 +23,34 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="40dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/timeTv"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:gravity="center"
-                    android:textSize="20dp" />
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="#0e0e0e"
+                    android:textSize="30dp" />
 
                 <TextView
                     android:id="@+id/tempInfo"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:gravity="center"
-                    android:textSize="20dp"
+                    android:layout_marginTop="30dp"
+                    android:textColor="#0e0e0e"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="30dp"
                     android:text="BioTracker" />
 
                 <ImageButton
                     android:id="@+id/emg_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="60dp"
                     android:layout_gravity="center"
                     android:onClick="em_click"
                     android:background="@android:color/transparent"
