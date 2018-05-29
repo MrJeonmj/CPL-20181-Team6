@@ -322,6 +322,7 @@ public class Main2Activity
         else if (id == R.id.nav_logout)
         {
             Intent intent1 = new Intent(Main2Activity.this, Login.class);
+            ServiceThread.index = -1;
             finish();
             startActivity(intent1);
         }
