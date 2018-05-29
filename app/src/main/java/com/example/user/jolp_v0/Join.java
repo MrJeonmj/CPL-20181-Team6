@@ -27,6 +27,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -92,6 +93,12 @@ public class Join extends FragmentActivity {
                 String name = ename.getText().toString();
                 String contact = econtact.getText().toString();
                 String address = eaddress.getText().toString();
+                String query = address;
+                try {
+                    query = URLEncoder.encode(address,"utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 String birth = ebirth.getText().toString();
                 String devi = devicenum.getText().toString();
                 String pn = pnum.getText().toString();
@@ -111,7 +118,7 @@ public class Join extends FragmentActivity {
 
 
                 task = new phpdo();
-                task.execute(id, pw, name, contact, address, birth, devi, pn);
+                task.execute(id, pw, name, contact, query, birth, devi, pn);
                 //finish();
 
             }

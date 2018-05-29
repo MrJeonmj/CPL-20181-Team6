@@ -9,11 +9,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
@@ -33,9 +36,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,9 +62,10 @@ public class Main2Activity
     TextView timeTv;
     InputMethodManager imm;
     PendingIntent sentPI;
+    phpdo task;
     private long backPressedTime = 0;
-    private String Message = "비상상황입니다."; // 문자 보낼 메시지
-    private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
+    static String Message = "비상상황입니다."; // 문자 보낼 메시지
+    static String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
     //실시간 표시 함수
     private Handler mHandler = new Handler();
     private Runnable mUpdateTimeTask = new Runnable()
@@ -77,6 +91,9 @@ public class Main2Activity
 
         Intent intent1 = new Intent(getApplicationContext(), UpdateService.class);
         startService(intent1);
+
+        task = new phpdo();
+        task.execute(Main2Activity.id);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -154,6 +171,50 @@ public class Main2Activity
         });
     }
 
+    private class phpdo extends AsyncTask<String,Void,String> {
+
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected String doInBackground(String... arg0) {
+
+            try {
+                String id = (String)arg0[0];
+
+                String link = "http://show8258.ipdisk.co.kr:8000/nummessage.php?ID="+id;
+                URL url = new URL(link);
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet();
+                request.setURI(new URI(link));
+                HttpResponse response = client.execute(request);
+                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+
+                while ((line = in.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                in.close();
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result){
+            //txtview.setText("Login Successful");
+            StringTokenizer st = new StringTokenizer(result);
+            Message = st.nextToken(",");
+            Phone = st.nextToken(",");
+
+
+        }
+    }
     //비상상황 알림
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void em_click(View v)
@@ -273,6 +334,7 @@ public class Main2Activity
         else if (id == R.id.nav_logout)
         {
             Intent intent1 = new Intent(Main2Activity.this, Login.class);
+            ServiceThread.index = -1;
             finish();
             startActivity(intent1);
         }

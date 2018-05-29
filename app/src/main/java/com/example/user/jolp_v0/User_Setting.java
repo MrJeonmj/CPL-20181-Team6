@@ -20,8 +20,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.StringTokenizer;
 
 public class User_Setting extends PreferenceActivity
@@ -97,8 +99,16 @@ public class User_Setting extends PreferenceActivity
         String bir = sharedPref.getString("birthvalue", "");
         String pw = sharedPref.getString("pwvalue", "");
         String dn = sharedPref.getString("devicevalue", "");
-
-        String link = "http://show8258.ipdisk.co.kr:8000/setting_change.php?ID="+id+"&P_NUM="+phone1+"&CALL_NUM="+phone+"&ADDRESS="+addr+"&DATE_OF_BIRTH="+bir+"&PW="+pw+"&DEVICE="+dn;
+        String ms = sharedPref.getString("msgvalue", "");
+        String query = ms;
+        try {
+            query = URLEncoder.encode(ms,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Main2Activity.Message = ms;
+        Main2Activity.Phone = phone;
+        String link = "http://show8258.ipdisk.co.kr:8000/setting_change.php?ID="+id+"&P_NUM="+phone1+"&CALL_NUM="+phone+"&ADDRESS="+addr+"&DATE_OF_BIRTH="+bir+"&PW="+pw+"&DEVICE="+dn+"&MESSAGE="+query;
         task1 = new phpdo1();
         task1.execute(link);
 
@@ -141,18 +151,20 @@ public class User_Setting extends PreferenceActivity
         @Override
         protected void onPostExecute(String result){
             //txtview.setText("Login Successful");
-            StringTokenizer st = new StringTokenizer(result," ");
+            StringTokenizer st = new StringTokenizer(result);
             sharedPref = PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext());
 
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("pwvalue",st.nextToken());
-            editor.putString("phonevalue",st.nextToken());
-            editor.putString("homevalue",st.nextToken());
-            editor.putString("birthvalue",st.nextToken());
-            editor.putString("partnerphonevalue",st.nextToken());
-            editor.putString("devicevalue",st.nextToken());
-            editor.putString("namevalue",st.nextToken());
+            editor.putString("pwvalue",st.nextToken(","));
+            editor.putString("phonevalue",st.nextToken(","));
+            editor.putString("homevalue",st.nextToken(","));
+            editor.putString("birthvalue",st.nextToken(","));
+            editor.putString("partnerphonevalue",st.nextToken(","));
+            editor.putString("devicevalue",st.nextToken(","));
+            editor.putString("msgvalue",st.nextToken(","));
+            editor.putString("namevalue",st.nextToken(","));
+
             editor.commit();
 
             getFragmentManager()
@@ -259,6 +271,7 @@ public class User_Setting extends PreferenceActivity
             bindPreferenceSummaryToValue(findPreference("birthvalue"));
             bindPreferenceSummaryToValue(findPreference("pwvalue"));
             bindPreferenceSummaryToValue(findPreference("devicevalue"));
+            bindPreferenceSummaryToValue(findPreference("msgvalue"));
 
 
             //Toast.makeText(getActivity(), sharedPref.getString("phonevalue", ""), Toast.LENGTH_SHORT).show();

@@ -69,6 +69,7 @@ public class Login extends FragmentActivity {
 
                 Intent a = new Intent(Login.this, Join.class);
                 startActivity(a);
+                //finish();
             }
         });
     }
