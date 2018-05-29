@@ -124,6 +124,7 @@ public class Maincontent2 extends Fragment {
             Toast.makeText(getActivity(),"전송을 완료하였습니다",Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onResume()
     {
@@ -152,5 +153,6 @@ public class Maincontent2 extends Fragment {
             mHandler.post(mUpdateTimeTask);
         }
     }
+
 
 }
