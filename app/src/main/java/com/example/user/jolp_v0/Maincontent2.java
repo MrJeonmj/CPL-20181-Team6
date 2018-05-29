@@ -38,7 +38,7 @@ public class Maincontent2 extends Fragment {
     View v;
     Timer mTimer;
     TextView timeTv;
-    //InputMethodManager imm;
+    InputMethodManager imm;
     PendingIntent sentPI;
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -48,7 +48,6 @@ public class Maincontent2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         //inflate메소드는 XML데이터를 가져와서 실제 View객체로 만드는 작업을 합니다.
         v = inflater.inflate(R.layout.content_main2, container, false);
         //imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -59,7 +58,6 @@ public class Maincontent2 extends Fragment {
             @Override
             public void onClick(View v) {
                 em_click(v);
-
             }
         });
         //실시간 표시 기능
@@ -102,7 +100,7 @@ public class Maincontent2 extends Fragment {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setChannelId(CHANNEL_ID)
                 .build();
-        notification.defaults |= Notification.DEFAULT_VIBRATE;//진동 울리기 안먹힘;;
+
         // Issue the notification.
         mNotificationManager.notify(notifyID, notification);
         //문자 보내기
@@ -122,6 +120,18 @@ public class Maincontent2 extends Fragment {
             sms.sendTextMessage(phoneNumber, null, message, null, null);
             Toast.makeText(getActivity(),"전송을 완료하였습니다",Toast.LENGTH_LONG).show();
         }
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        timeTv = (TextView) v.findViewById(R.id.timeTv);
+        //실시간 표시 기능
+        MainTimerTask timerTask = new MainTimerTask();
+        Timer timer = new Timer();
+        timer.schedule(timerTask,500,1000);
+
     }
     //실시간 표시 함수
     private Handler mHandler = new Handler();

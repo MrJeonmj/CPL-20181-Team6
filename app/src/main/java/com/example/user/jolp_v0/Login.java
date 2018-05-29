@@ -59,8 +59,6 @@ public class Login extends FragmentActivity {
                 task = new phpdo();
                 task.execute(id, pw);
 
-
-
             }
         });
 
@@ -69,19 +67,13 @@ public class Login extends FragmentActivity {
             @Override
             public void onClick(View v) {
 
-
                 Intent a = new Intent(Login.this, Join.class);
                 startActivity(a);
-
-
             }
         });
-
     }
 
-
     private class phpdo extends AsyncTask<String,Void,String> {
-
         protected void onPreExecute(){
 
         }

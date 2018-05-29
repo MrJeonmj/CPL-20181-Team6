@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Alarm extends AppCompatActivity {
     TextView tv;
@@ -43,6 +44,7 @@ public class Alarm extends AppCompatActivity {
             public void onClick(View v) {
                         Step.step_sec[step] = np.getValue();
                         finish();
+                Toast.makeText(Alarm.this, "설정되었습니다.", Toast.LENGTH_SHORT).show();
                   }
             }
         );

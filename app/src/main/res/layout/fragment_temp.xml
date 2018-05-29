@@ -21,11 +21,14 @@
 
     </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
-    <Button
+    <ImageButton
         android:id="@+id/button_graph"
-        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="그래프 보기"
-        android:layout_weight="2"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/stat_img"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"/>
 
 </LinearLayout>
