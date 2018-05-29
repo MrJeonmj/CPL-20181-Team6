@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -137,12 +138,10 @@ public class Temp extends Fragment {
             }
         });
 
-        Button buttonjoin = (Button)v.findViewById(R.id.button_graph);
+        ImageButton buttonjoin = (ImageButton)v.findViewById(R.id.button_graph);
         buttonjoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent a = new Intent(getActivity(), Graph_Statistics.class);
                 startActivity(a);
 
@@ -375,8 +374,8 @@ public class Temp extends Fragment {
             int sum=0;
             for(int i=0;i<date_Data.size();i++){
                 if(year.format(temp1).equals(year.format(date_Data.get(i))) && month.format(temp1).equals(month.format(date_Data.get(i))) && day.format(temp1).equals(day.format(date_Data.get(i)))){
-                        sum += step_Data.get(i);
-                        temp1 = date_Data.get(i);
+                    sum += step_Data.get(i);
+                    temp1 = date_Data.get(i);
                 }
                 else{
                     if(0<sum && sum < 20){
