@@ -109,7 +109,7 @@ public class User_Setting extends PreferenceActivity
             e.printStackTrace();
         }
         Main2Activity.Message = ms;
-        Main2Activity.Phone = phone;
+        Main2Activity.Phone = phone1;
         String link = "http://show8258.ipdisk.co.kr:8000/setting_change.php?ID="+id+"&P_NUM="+qu+"&CALL_NUM="+phone+"&ADDRESS="+addr+"&DATE_OF_BIRTH="+bir+"&PW="+pw+"&DEVICE="+dn+"&MESSAGE="+query;
         task1 = new phpdo1();
         task1.execute(link);
