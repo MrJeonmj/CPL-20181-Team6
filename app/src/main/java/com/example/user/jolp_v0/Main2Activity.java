@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -55,6 +56,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
 
     static String id;
 
+    //static SharedPreferences pref;
+    //static SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +67,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent1 = new Intent(getApplicationContext(),UpdateService.class);
-        startService(intent1);
+        //pref = getSharedPreferences("test", MODE_PRIVATE);
+        //editor = pref.edit();
+
 
         imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         timeTv = (TextView) findViewById(R.id.timeTv);
@@ -112,6 +117,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             }
         });
 
+        Intent intent1 = new Intent(getApplicationContext(),UpdateService.class);
+        startService(intent1);
 
     }
     //비상상황 알림
@@ -183,6 +190,18 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         public void run() {
             mHandler.post(mUpdateTimeTask);
         }
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        timeTv = (TextView) findViewById(R.id.timeTv);
+        //실시간 표시 기능
+        MainTimerTask timerTask = new MainTimerTask();
+        Timer timer = new Timer();
+        timer.schedule(timerTask,500,1000);
+
     }
     @Override
     public void onBackPressed() {

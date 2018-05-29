@@ -30,9 +30,17 @@ public class ServiceThread extends Thread{
     private static final String TAG_ID="ID";
     private static final String TAG_BREATH="BREATH";
     private static final String TAG_DATE="DATE";
+    private static final String TAG_STEP1="STEP1";
+    private static final String TAG_STEP2="STEP2";
+    private static final String TAG_STEP3="STEP3";
+    private static final String TAG_STEP4="STEP4";
+    private static final String TAG_STEP5="STEP5";
+    private static final String TAG_INDEX="INDEX";
+
     ArrayList<HashMap<String, String>> mArrayList;
     String mJsonString;
-    static int index=0;
+    static int index=-1;
+
 
 
 
@@ -57,11 +65,11 @@ public class ServiceThread extends Thread{
             try{
                 Thread.sleep(1000); //10초씩 쉰다.
                 GetData task = new GetData();
-                task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id);
-                for(int i = index;i<Temp.step_Data.size();i++){
-                    Step.vib_occur((int) (long) Temp.step_Data.get(i),UpdateService.vib);
-                }
-                index = Temp.step_Data.size();
+                task.execute("http://show8258.ipdisk.co.kr:8000/breathlist.php?ID="+Main2Activity.id+"&INDEX="+index);
+                //index = Integer.parseInt(Main2Activity.pref.getString("SET_1",Integer.toString(index)));
+
+                //Main2Activity.editor.putString("SET_1",Integer.toString(index));
+                //Main2Activity.editor.commit();
             }catch (Exception e) {}
         }
     }
@@ -165,10 +173,10 @@ public class ServiceThread extends Thread{
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+            int j;
+            for(j=0;j<jsonArray.length();j++){
 
-            for(int i=0;i<jsonArray.length();i++){
-
-                JSONObject item = jsonArray.getJSONObject(i);
+                JSONObject item = jsonArray.getJSONObject(j);
 
                 String id = item.getString(TAG_ID);
                 String breath = item.getString(TAG_BREATH);
@@ -185,6 +193,14 @@ public class ServiceThread extends Thread{
 
                 mArrayList.add(hashMap);
             }
+            JSONObject item = jsonArray.getJSONObject(j-1);
+            Step.step_sec[1] = Integer.parseInt(item.getString(TAG_STEP1));
+            Step.step_sec[2] = Integer.parseInt(item.getString(TAG_STEP2));
+            Step.step_sec[3] = Integer.parseInt(item.getString(TAG_STEP3));
+            Step.step_sec[4] = Integer.parseInt(item.getString(TAG_STEP4));
+            Step.step_sec[5] = Integer.parseInt(item.getString(TAG_STEP5));
+            index = Integer.parseInt(item.getString(TAG_INDEX));
+
             SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             int tag = -1;
@@ -213,6 +229,11 @@ public class ServiceThread extends Thread{
                 }
 
             }
+
+            for(int i = index;i<Temp.step_Data.size();i++){
+                Step.vib_occur((int) (long) Temp.step_Data.get(i),UpdateService.vib);
+            }
+            index = Temp.step_Data.size();
 
 
         } catch (JSONException e) {
