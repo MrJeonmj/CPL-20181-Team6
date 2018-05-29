@@ -27,6 +27,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -37,10 +38,11 @@ public class Join extends FragmentActivity {
     phpdo task;
 
     EditText eid;
-    EditText epw;
+    EditText epw, pnum, devicenum;
     EditText ename, econtact, eaddress;
     TextView ebirth;
-    String epatient;
+    //String epatient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class Join extends FragmentActivity {
         econtact = (EditText)findViewById(R.id.join_contact);
         eaddress = (EditText)findViewById(R.id.join_address);
         ebirth = (TextView) findViewById(R.id.join_birth_text);
+        devicenum = (EditText)findViewById(R.id.join_device);
+        pnum = (EditText)findViewById(R.id.join_pnum);
 
 //        mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
 
@@ -89,23 +93,32 @@ public class Join extends FragmentActivity {
                 String name = ename.getText().toString();
                 String contact = econtact.getText().toString();
                 String address = eaddress.getText().toString();
+                String query = address;
+                try {
+                    query = URLEncoder.encode(address,"utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 String birth = ebirth.getText().toString();
+                String devi = devicenum.getText().toString();
+                String pn = pnum.getText().toString();
 
-                final RadioGroup rg = (RadioGroup)findViewById(R.id.btn_is_patient);
-                int radio_id = rg.getCheckedRadioButtonId();
-                RadioButton rb = (RadioButton) findViewById(radio_id);
-                if(rb.getText().equals("환자")){
-                    epatient = Integer.toString(1);
-                }
-                else{
-                    epatient = Integer.toString(0);
-                }
+
+//                final RadioGroup rg = (RadioGroup)findViewById(R.id.btn_is_patient);
+//                int radio_id = rg.getCheckedRadioButtonId();
+//                RadioButton rb = (RadioButton) findViewById(radio_id);
+//                if(rb.getText().equals("환자")){
+//                    epatient = Integer.toString(1);
+//                }
+//                else{
+//                    epatient = Integer.toString(0);
+//                }
 
 
 
 
                 task = new phpdo();
-                task.execute(id, pw, name, contact, address, birth, epatient);
+                task.execute(id, pw, name, contact, query, birth, devi, pn);
                 //finish();
 
             }
@@ -184,9 +197,10 @@ public class Join extends FragmentActivity {
                 String contact = (String)arg0[3];
                 String address = (String)arg0[4];
                 String birth = (String)arg0[5];
-                String is_patient = (String)arg0[6];
+                String dev = (String)arg0[6];
+                String pn = (String)arg0[7];
 
-                String link = "http://show8258.ipdisk.co.kr:8000/join.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&ADDRESS="+address+"&BIRTHDATE="+birth+"&IS_PATIENT="+is_patient;
+                String link = "http://show8258.ipdisk.co.kr:8000/join.php?ID="+id+"&PW="+pw+"&NAME="+name+"&CONTACT="+contact+"&ADDRESS="+address+"&BIRTHDATE="+birth+"&P_NUM="+pn+"&DEVICE="+dev;
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();

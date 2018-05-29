@@ -34,8 +34,15 @@
                 android:title="생년월일" />
 
             <EditTextPreference
+                android:key="msgvalue"
+                android:title="비상메세지" />
+
+            <EditTextPreference
                 android:key="pwvalue"
                 android:title="비밀번호" />
+            <EditTextPreference
+                android:key="devicevalue"
+                android:title="디바이스 일련번호" />
         </PreferenceCategory>
 
 

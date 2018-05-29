@@ -66,8 +66,6 @@ public class Maincontent2 extends Fragment {
         Timer timer = new Timer();
         timer.schedule(timerTask,500,1000);
 
-
-
         return v;
     }
     //이미지 버튼 클릭시 수행
@@ -124,6 +122,7 @@ public class Maincontent2 extends Fragment {
             Toast.makeText(getActivity(),"전송을 완료하였습니다",Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onResume()
     {
@@ -152,5 +151,6 @@ public class Maincontent2 extends Fragment {
             mHandler.post(mUpdateTimeTask);
         }
     }
+
 
 }

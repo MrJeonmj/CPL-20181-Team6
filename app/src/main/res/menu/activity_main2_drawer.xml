@@ -3,21 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_home"
-            android:title="홈" />
-        <item
-            android:id="@+id/nav_temp"
-            android:icon="@drawable/ic_menu_temp"
-            android:title="체온" />
-        <item
-            android:id="@+id/nav_breath"
-            android:icon="@drawable/heart"
-            android:title="호흡" />
-    </group>
-
     <item android:title="User">
         <menu>
             <item
@@ -34,5 +19,4 @@
                 android:title="로그아웃" />
         </menu>
     </item>
-
 </menu>
