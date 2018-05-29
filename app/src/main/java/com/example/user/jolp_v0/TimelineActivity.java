@@ -108,7 +108,7 @@ public class TimelineActivity extends AppCompatActivity
             long stepTime = step_Data.get(i);
             int stepLevel = 0;
 
-            if (stepTime == 0)
+            if (stepTime <= 0)
                 continue;
             else if (stepTime < Step.step_sec[1])
                 stepLevel = 1;
