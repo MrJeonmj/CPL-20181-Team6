@@ -12,7 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -39,6 +42,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import lecho.lib.hellocharts.model.Line;
 
 /**
  * Created by kch on 2017. 9. 22..
@@ -92,7 +97,12 @@ public class Breath extends Fragment
         }
         Collections.reverse(labels);
 
-        // get entries; average of each month for 12 months
+        // get entries; average of e.g. each month for 12 months
+        double minValue = Double.MAX_VALUE;
+        double avgValue = 0;
+        int totalCount = 0;
+        double maxValue = Double.MIN_VALUE;
+
         double[] sums = new double[lengths[dataGettingMode]];
         int[] count = new int[lengths[dataGettingMode]];
         for (HashMap<String, String> h : mArrayList)
@@ -136,13 +146,29 @@ public class Breath extends Fragment
                 if (0 <= diff && diff < lengths[dataGettingMode])
                 {
                     double d = Double.parseDouble(h.get(TAG_TEMP));
+
+                    // calculate sum, avg
                     sums[diff] += d;
+                    avgValue += d; // now acting as "total sum"; later this will be divided into `totalCount`
                     ++count[diff];
-                    Log.d("Breath", String.format(Locale.KOREA, "diff: %d, value = %f, count = %d, current avg = %f",
-                            diff, d, count[diff], sums[diff] / count[diff]));
+
+                    //Log.d("Breath", String.format(Locale.KOREA, "d = %f, minValue = %f, maxValue = %f",
+                    //      d, minValue, maxValue));
+
+                    // determine minimum
+                    if (d < minValue)
+                        minValue = d;
+
+                    // determine maximum
+                    if (d > maxValue)
+                        maxValue = d;
+
+                    //Log.d("Breath", String.format(Locale.KOREA, "diff: %d, value = %f, count = %d, current avg = %f",
+                    //        diff, d, count[diff], sums[diff] / count[diff]));
                 }
-            }
-            catch (Exception e)
+
+
+            } catch (Exception e)
             {
                 Log.println(Log.ERROR, "Breath", e.getClass().toString());
                 e.printStackTrace();
@@ -152,7 +178,21 @@ public class Breath extends Fragment
         for (int i = 0; i < lengths[dataGettingMode]; ++i)
         {
             entries.add(new Entry((float) (sums[i] / count[i]), lengths[dataGettingMode] - 1 - i));
+            totalCount += count[i];
         }
+
+        avgValue /= totalCount;
+
+        // show min, avg, max
+
+        TextView minV = v.findViewById(R.id.text_minbeat);
+        TextView avgV = v.findViewById(R.id.text_avgbeat);
+        TextView maxV = v.findViewById(R.id.text_maxbeat);
+
+
+        minV.setText(minValue == Double.MAX_VALUE ? "0" : String.format("%.1f", minValue));
+        avgV.setText(Double.isNaN(avgValue) ? "0" : String.format("%.1f", avgValue));
+        maxV.setText(maxValue == Double.MIN_VALUE ? "0" : String.format("%.1f", maxValue));
     }
 
     private void getLabelsAndEntries(int dataGettingMode)
@@ -198,8 +238,7 @@ public class Breath extends Fragment
             getLabelsAndEntries(DATA_GETTING_MODE_YEAR);
             initGraph();
 
-        }
-        catch (JSONException e)
+        } catch (JSONException e)
         {
 
             Log.d(TAG, "showResult : ", e);
@@ -336,8 +375,7 @@ public class Breath extends Fragment
             {
 
                 //mTextViewResult.setText(errorString);
-            }
-            else
+            } else
             {
 
                 mJsonString = result;
@@ -373,8 +411,7 @@ public class Breath extends Fragment
                 if (responseStatusCode == HttpURLConnection.HTTP_OK)
                 {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else
+                } else
                 {
                     inputStream = httpURLConnection.getErrorStream();
                 }
@@ -395,8 +432,7 @@ public class Breath extends Fragment
                 return sb.toString().trim();
 
 
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
 
                 Log.d(TAG, "InsertData: Error ", e);

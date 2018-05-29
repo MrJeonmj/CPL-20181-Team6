@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/breathLinear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="center_vertical"
     android:background="#ffffff"
-    >
+    android:orientation="vertical">
     <!--android:theme="@style/Theme.AppCompat.NoActionBar"-->
 
     <android.support.v7.widget.Toolbar
@@ -42,6 +42,7 @@
         android:layout_margin="10dp" />
 
     <LinearLayout
+        android:id="@+id/lowerLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -50,6 +51,7 @@
 
 
         <LinearLayout
+            android:id="@+id/maxLinear"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -72,6 +74,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/avgLinear"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
@@ -94,6 +97,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/minLinear"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
@@ -106,7 +110,7 @@
                 app:srcCompat="@drawable/low_beat" />
 
             <TextView
-                android:id="@+id/text_lowbeat"
+                android:id="@+id/text_minbeat"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/circle"
