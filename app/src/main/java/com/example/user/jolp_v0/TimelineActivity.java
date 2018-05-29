@@ -5,7 +5,6 @@ import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,39 +27,6 @@ public class TimelineActivity extends AppCompatActivity
     private ArrayList<CardData> alCardData = null;
     private ArrayList<Date> date_Data = new ArrayList<>(Temp.date_Data);
     private ArrayList<Long> step_Data = new ArrayList<>(Temp.step_Data);
-
-    private class CardData
-    {
-        private int hour, minute, second, steplevel;
-
-        public CardData(int hour, int minute, int second, int steplevel)
-        {
-            this.hour = hour;
-            this.minute = minute;
-            this.second = second;
-            this.steplevel = steplevel;
-        }
-
-        public int getHour()
-        {
-            return hour;
-        }
-
-        public int getMinute()
-        {
-            return minute;
-        }
-
-        public int getSecond()
-        {
-            return second;
-        }
-
-        public int getSteplevel()
-        {
-            return steplevel;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -120,8 +86,8 @@ public class TimelineActivity extends AppCompatActivity
             alCardData.clear();
         }
 
-        Log.d("TimelineActivity", "date_Data.size() : " + date_Data.size() );
-        Log.d("TimelineActivity", "step_Data.size() : " + step_Data.size() );
+        Log.d("TimelineActivity", "date_Data.size() : " + date_Data.size());
+        Log.d("TimelineActivity", "step_Data.size() : " + step_Data.size());
 
         for (int i = 0; i < date_Data.size(); ++i)
         {
@@ -157,11 +123,11 @@ public class TimelineActivity extends AppCompatActivity
 
             CardData cd = new CardData
                     (cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),
-                    cal.get(Calendar.SECOND), stepLevel);
+                            cal.get(Calendar.SECOND), stepLevel);
             alCardData.add(cd);
             Log.d("TimelineActivity",
                     String.format("%02d:%02d:%02d level %d", cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),
-                    cal.get(Calendar.SECOND), stepLevel));
+                            cal.get(Calendar.SECOND), stepLevel));
         }
 
         /*
@@ -203,7 +169,6 @@ public class TimelineActivity extends AppCompatActivity
             else
                 addObj(makeLine("", COLOR_WHITE, MaterialTimelineView.Companion.getPOSITION_MIDDLE()));
         }
-
 
 
         // programmatically changing like this
@@ -284,6 +249,39 @@ public class TimelineActivity extends AppCompatActivity
         Log.d("TimelineActivity", "now date_Data.size(): " + date_Data.size());
 
         super.onDestroy();
+    }
+
+    private class CardData
+    {
+        private int hour, minute, second, steplevel;
+
+        public CardData(int hour, int minute, int second, int steplevel)
+        {
+            this.hour = hour;
+            this.minute = minute;
+            this.second = second;
+            this.steplevel = steplevel;
+        }
+
+        public int getHour()
+        {
+            return hour;
+        }
+
+        public int getMinute()
+        {
+            return minute;
+        }
+
+        public int getSecond()
+        {
+            return second;
+        }
+
+        public int getSteplevel()
+        {
+            return steplevel;
+        }
     }
 
 }
