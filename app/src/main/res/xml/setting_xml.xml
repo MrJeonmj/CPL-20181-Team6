@@ -3,19 +3,14 @@
     <!-- opens a subscreen of settings -->
 
         <PreferenceCategory
-            android:key="usercategory"
-            android:title="ID" >
+            android:key="userinfocategory"
+            android:title="사용자 정보" >
             <Preference
                 android:key="idvalue"
-                android:title="" />
-        </PreferenceCategory>
-
-        <PreferenceCategory
-            android:key="namecategory"
-            android:title="이름" >
+                android:title="ID" />
             <Preference
                 android:key="namevalue"
-                android:title="" />
+                android:title="이름" />
         </PreferenceCategory>
 
         <PreferenceCategory
