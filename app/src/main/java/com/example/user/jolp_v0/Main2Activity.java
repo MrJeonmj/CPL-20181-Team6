@@ -78,17 +78,43 @@ public class Main2Activity
         startService(intent1);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        timeTv = (TextView) findViewById(R.id.timeTv);
+
+        timeTv = findViewById(R.id.timeTv);
         //실시간 표시 기능
         MainTimerTask timerTask = new MainTimerTask();
         Timer timer = new Timer();
         timer.schedule(timerTask, 500, 1000);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        try
+        {
+            NavigationView nv = findViewById(R.id.nav_view);
+            // Log.d("Main2Activity", "nv: " + nv.toString());
+            View v = nv.getHeaderView(0);
+            // Log.d("Main2Activity", "v: " + v.toString());
+            TextView name = v.findViewById(R.id.userNameTextView);
+            // Log.d("Main2Activity", "name: " + name.toString());
+
+            String strName = Main2Activity.id;
+            // TODO: get name from server
+
+            Intent intent = new Intent(this, User_Setting.class);
+            intent.putExtra("id", Main2Activity.id);
+            intent.putExtra("name", strName);
+
+            String txt = strName + " 님";
+            name.setText(txt);
+        }
+        catch (Exception e)
+        {
+            Log.e("Main2Activity", "onCreateView", e);
+            Toast.makeText(this, "failed to initialize user information", Toast.LENGTH_SHORT).show();
+        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -125,23 +151,6 @@ public class Main2Activity
                 return false;
             }
         });
-
-        TextView name = findViewById(R.id.userNameTextView);
-        try
-        {
-            String strName = id;
-            // TODO: get name from server
-
-            Intent intent = new Intent(Main2Activity.this, User_Setting.class);
-            intent1.putExtra("id", id);
-            intent1.putExtra("name", strName);
-
-            name.setText(strName + " 님");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     //비상상황 알림
