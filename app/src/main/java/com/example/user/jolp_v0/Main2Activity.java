@@ -1,8 +1,6 @@
 package com.example.user.jolp_v0;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -18,95 +16,124 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    TextView timeTv;
-    Timer mTimer;
-    InputMethodManager imm;
-    PendingIntent sentPI;
-    private final long FINISH_INTERVAL_TIME = 2000;
-    private long backPressedTime = 0;
-
-    private String Message = "비상상황입니다."; // 문자 보낼 메시지
-    private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
+public class Main2Activity
+        extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
 
     static String id;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    TextView timeTv;
+    InputMethodManager imm;
+    PendingIntent sentPI;
+    private long backPressedTime = 0;
+    private String Message = "비상상황입니다."; // 문자 보낼 메시지
+    private String Phone = "01040304324";  // 문자 보낼 휴대폰 번호
     //실시간 표시 함수
     private Handler mHandler = new Handler();
-    private Runnable mUpdateTimeTask = new Runnable() {
-        public void run() {
+    private Runnable mUpdateTimeTask = new Runnable()
+    {
+        public void run()
+        {
             Date rightNow = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat(
-                    "yyyy.MM.dd hh:mm:ss ");
+            SimpleDateFormat formatter =
+                    new SimpleDateFormat("yyyy.MM.dd hh:mm:ss", Locale.KOREA);
             String dateString = formatter.format(rightNow);
             timeTv.setText(dateString);
         }
     };
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         id = getIntent().getStringExtra("id");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent1 = new Intent(getApplicationContext(),UpdateService.class);
+        Intent intent1 = new Intent(getApplicationContext(), UpdateService.class);
         startService(intent1);
 
-        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        timeTv = (TextView) findViewById(R.id.timeTv);
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        timeTv = findViewById(R.id.timeTv);
         //실시간 표시 기능
         MainTimerTask timerTask = new MainTimerTask();
-        mTimer = new Timer();
-        mTimer.schedule(timerTask,500,1000);
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 500, 1000);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        try
+        {
+            NavigationView nv = findViewById(R.id.nav_view);
+            // Log.d("Main2Activity", "nv: " + nv.toString());
+            View v = nv.getHeaderView(0);
+            // Log.d("Main2Activity", "v: " + v.toString());
+            TextView name = v.findViewById(R.id.userNameTextView);
+            // Log.d("Main2Activity", "name: " + name.toString());
+
+            String strName = Main2Activity.id;
+            // TODO: get name from server
+
+            Intent intent = new Intent(this, User_Setting.class);
+            intent.putExtra("id", Main2Activity.id);
+            intent.putExtra("name", strName);
+
+            String txt = strName + " 님";
+            name.setText(txt);
+        }
+        catch (Exception e)
+        {
+            Log.e("Main2Activity", "onCreateView", e);
+            Toast.makeText(this, "failed to initialize user information", Toast.LENGTH_SHORT).show();
+        }
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         BottomNavigationView bottomavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        // BottomNavigationViewHelperでアイテムのサイズ、アニメーションを調整
+        // BottomNavigationViewHelper 에서 아이템 사이즈와 애니메이션 조정
         BottomNavigationViewHelper.disableShiftMode(bottomavigation);
-        // BottomNavigationViewを選択したときのリスナー
-        bottomavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        // BottomNavigationView 를 선택했을 때의 Listener
+        bottomavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
+        {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item)
+            {
 
                 FragmentManager manager = getFragmentManager();
 
-                // 各選択したときの処理
-                switch (item.getItemId()) {
+                // 선택 처리
+                switch (item.getItemId())
+                {
                     case R.id.nav_temp:
                         manager.beginTransaction().add(R.id.content_main, new Temp()).commit();
 
@@ -124,15 +151,14 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 return false;
             }
         });
-
-
-
     }
+
     //비상상황 알림
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void em_click(View v){
-        PendingIntent mpend = PendingIntent.getActivity(Main2Activity.this,0 ,
-                new Intent(getApplicationContext(),Main2Activity.class) ,PendingIntent.FLAG_CANCEL_CURRENT);
+    public void em_click(View v)
+    {
+        PendingIntent mpend = PendingIntent.getActivity(Main2Activity.this, 0,
+                new Intent(getApplicationContext(), Main2Activity.class), PendingIntent.FLAG_CANCEL_CURRENT);
         //상단바 알림
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -167,58 +193,79 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         //문자 보내기
         sendSMS(Phone, Message);
     }
-    private void sendSMS(String phoneNumber, String message) {
+
+    private void sendSMS(String phoneNumber, String message)
+    {
         // 권한이 허용되어 있는지 확인한다
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS);
 
-        if(permissionCheck == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SEND_SMS},1);
-            Toast.makeText(this,"권한을 허용하고 재전송해주세요",Toast.LENGTH_LONG).show();
-        } else {
+        if (permissionCheck == PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
+            Toast.makeText(this, "권한을 허용하고 재전송해주세요", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
             SmsManager sms = SmsManager.getDefault();
 
             // 아래 구문으로 지정된 핸드폰으로 문자 메시지를 보낸다
             sms.sendTextMessage(phoneNumber, null, message, null, null);
-            Toast.makeText(this,"전송을 완료하였습니다",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "전송을 완료하였습니다", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else
+        {
             super.onBackPressed();
         }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         FragmentManager manager = getFragmentManager();
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_home)
+        {
             manager.beginTransaction().add(R.id.content_main, new Maincontent2()).commit();
 
 
-        } else if (id == R.id.nav_temp) {
+        }
+        else if (id == R.id.nav_temp)
+        {
             manager.beginTransaction().add(R.id.content_main, new Temp()).commit();
 
 
-        } else if (id == R.id.nav_breath) {
+        }
+        else if (id == R.id.nav_breath)
+        {
             manager.beginTransaction().add(R.id.content_main, new Breath()).commit();
-        } else if (id == R.id.nav_setting) {
+        }
+        else if (id == R.id.nav_setting)
+        {
             Intent intent1 = new Intent(Main2Activity.this, User_Setting.class);
             startActivity(intent1);
 
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id == R.id.nav_logout)
+        {
             Intent intent1 = new Intent(Main2Activity.this, Login.class);
             finish();
             startActivity(intent1);
-        } else if (id == R.id.nav_asetting) {
+        }
+        else if (id == R.id.nav_asetting)
+        {
             Intent intent1 = new Intent(Main2Activity.this, Step.class);
             startActivity(intent1);
         }
@@ -227,8 +274,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    class MainTimerTask extends TimerTask {
-        public void run() {
+
+    class MainTimerTask extends TimerTask
+    {
+        public void run()
+        {
             mHandler.post(mUpdateTimeTask);
         }
     }

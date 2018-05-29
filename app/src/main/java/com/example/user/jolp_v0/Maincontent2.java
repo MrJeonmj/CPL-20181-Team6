@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,8 @@ public class Maincontent2 extends Fragment {
         MainTimerTask timerTask = new MainTimerTask();
         Timer timer = new Timer();
         timer.schedule(timerTask,500,1000);
+
+
 
         return v;
     }
