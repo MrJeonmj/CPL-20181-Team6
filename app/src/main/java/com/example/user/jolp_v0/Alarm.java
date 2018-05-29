@@ -76,7 +76,7 @@ public class Alarm extends AppCompatActivity {
                 String step = (String)arg0[0];
                 String value = (String)arg0[1];
 
-                String link = "http://show8258.ipdisk.co.kr:8000/join.php?ID="+Main2Activity.id+"&STEP"+step+"="+value;
+                String link = "http://show8258.ipdisk.co.kr:8000/setting_input.php?ID="+Main2Activity.id+"&STEP"+step+"="+value;
                 URL url = new URL(link);
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
