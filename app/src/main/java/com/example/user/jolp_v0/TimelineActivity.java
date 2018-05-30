@@ -110,16 +110,16 @@ public class TimelineActivity extends AppCompatActivity
 
             if (stepTime <= 0)
                 continue;
-            else if (stepTime < Step.step_sec[1])
-                stepLevel = 1;
-            else if (stepTime < Step.step_sec[2])
-                stepLevel = 2;
-            else if (stepTime < Step.step_sec[3])
-                stepLevel = 3;
-            else if (stepTime < Step.step_sec[4])
-                stepLevel = 4;
-            else
+            else if (stepTime > Step.step_sec[5])
                 stepLevel = 5;
+            else if (stepTime > Step.step_sec[4])
+                stepLevel = 4;
+            else if (stepTime > Step.step_sec[3])
+                stepLevel = 3;
+            else if (stepTime > Step.step_sec[2])
+                stepLevel = 2;
+            else
+                stepLevel = 1;
 
             CardData cd = new CardData
                     (cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),

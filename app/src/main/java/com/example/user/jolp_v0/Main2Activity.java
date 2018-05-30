@@ -59,6 +59,7 @@ public class Main2Activity
 
     static String id;
     private final long FINISH_INTERVAL_TIME = 2000;
+    static Context kk;
     TextView timeTv;
     InputMethodManager imm;
     PendingIntent sentPI;
@@ -88,7 +89,7 @@ public class Main2Activity
         id = getIntent().getStringExtra("id");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        kk = getApplicationContext();
         Intent intent1 = new Intent(getApplicationContext(), UpdateService.class);
         startService(intent1);
 

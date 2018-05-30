@@ -1,13 +1,19 @@
 package com.example.user.jolp_v0;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -76,6 +82,7 @@ public class Step extends AppCompatActivity {
 
         if(step_sec[5]<second){//step5발동
             myNum = 5;
+
         }
         else if(step_sec[4]<second){
             myNum = 4;
@@ -100,5 +107,26 @@ public class Step extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
     }
+//    private static void sendSMS(String phoneNumber, String message)
+//    {
+//        // 권한이 허용되어 있는지 확인한다
+//        int permissionCheck = ContextCompat.checkSelfPermission(Main2Activity.kk, android.Manifest.permission.SEND_SMS);
+//
+//        if (permissionCheck == PackageManager.PERMISSION_DENIED)
+//        {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
+//            Toast.makeText(Main2Activity.kk, "권한을 허용하고 재전송해주세요", Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            SmsManager sms = SmsManager.getDefault();
+//
+//            // 아래 구문으로 지정된 핸드폰으로 문자 메시지를 보낸다
+//            sms.sendTextMessage(phoneNumber, null, message, null, null);
+//            Toast.makeText(Main2Activity.kk, "전송을 완료하였습니다", Toast.LENGTH_LONG).show();
+//        }
+//        return;
+//    }
 }
