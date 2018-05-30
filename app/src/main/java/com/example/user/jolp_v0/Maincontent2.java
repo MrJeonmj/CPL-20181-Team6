@@ -105,7 +105,7 @@ public class Maincontent2 extends Fragment {
         // Issue the notification.
         mNotificationManager.notify(notifyID, notification);
         //문자 보내기
-        sendSMS(Phone, Message);
+        sendSMS(Main2Activity.Phone, Main2Activity.Message);
     }
     private void sendSMS(String phoneNumber, String message) {
         // 권한이 허용되어 있는지 확인한다

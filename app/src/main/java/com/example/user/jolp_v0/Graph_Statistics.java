@@ -1,8 +1,10 @@
 package com.example.user.jolp_v0;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 //import android.widget.Toolbar;
+
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,8 +52,8 @@ public class Graph_Statistics extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph__statistics);
-
-
+        //android.app.FragmentManager manager = getFragmentManager();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new PlaceholderFragment()).commit();
         /*
          * 스피너 관련
          */
@@ -58,6 +62,7 @@ public class Graph_Statistics extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 choose_year = adapterView.getItemAtPosition(i).toString();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, new PlaceholderFragment()).commit();
             }
 
             @Override
@@ -74,7 +79,8 @@ public class Graph_Statistics extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, spinner_items);
         SimpleDateFormat year = new SimpleDateFormat( "yyyy" );
         int temp = 0;
-        for(int i=0;i<Temp.date_Data.size();i++){
+        for(int i=0;i<Temp.step_Data.size();i++){
+            temp = 0;
             for(int j=0;j<spinner_items.size();j++){
                 if(year.format(Temp.date_Data.get(i)).equals(spinner_items.get(j))){
                     temp = 1;
@@ -96,6 +102,8 @@ public class Graph_Statistics extends AppCompatActivity {
 
         //스피너의 어댑터 지정
         spinner.setAdapter(spinner_adapter);
+
+        //manager.beginTransaction().replace(R.id.fr_gr, new PlaceAutocompleteFragment()).commit();
 
 //        //toolbar
 //        category = getResources().getStringArray(R.array.category);
@@ -122,9 +130,16 @@ public class Graph_Statistics extends AppCompatActivity {
 //            }
 //        });
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
+//        }
+        //finish();
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new PlaceholderFragment()).commit();
+
     }
 
 
@@ -163,9 +178,18 @@ public class Graph_Statistics extends AppCompatActivity {
 
             generateColumnData();
 
-
+            //Intent intent = new Intent(getActivity(),Graph_Statistics.class);
+            //startActivity(intent);
 
             return rootView;
+        }
+
+        @Override
+        public void onResume(){
+            super.onResume();
+            generateInitialLineData();
+            generateColumnData();
+
         }
 
         private void generateColumnData() {
@@ -189,7 +213,7 @@ public class Graph_Statistics extends AppCompatActivity {
                 else{
                     m = Integer.toString(i);
                 }
-                for(int j=0;j<Temp.date_Data.size();j++){
+                for(int j=0;j<Temp.step_Data.size();j++){
                     if(year.format(Temp.date_Data.get(j)).equals(choose_year) && month.format(Temp.date_Data.get(j)).equals(m)){
                         sum += Temp.step_Data.get(j);
                     }
@@ -283,7 +307,7 @@ public class Graph_Statistics extends AppCompatActivity {
                 else{
                     m = Integer.toString(choose_month);
                 }
-                for(int j=0;j<Temp.date_Data.size();j++){
+                for(int j=0;j<Temp.step_Data.size();j++){
                     if(year.format(Temp.date_Data.get(j)).equals(choose_year) && month.format(Temp.date_Data.get(j)).equals(m) && day.format(Temp.date_Data.get(j)).equals(d)){
                         sum += Temp.step_Data.get(j);
                     }

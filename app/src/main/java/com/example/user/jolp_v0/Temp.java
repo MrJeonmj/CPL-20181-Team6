@@ -115,7 +115,7 @@ public class Temp extends Fragment {
         }
         //String kk = format.format(temp1);
         int sum=0;
-        for(int i=0;i<date_Data.size();i++){
+        for(int i=0;i<step_Data.size();i++){
             if(year.format(temp1).equals(year.format(date_Data.get(i))) && month.format(temp1).equals(month.format(date_Data.get(i))) && day.format(temp1).equals(day.format(date_Data.get(i)))){
                 sum += step_Data.get(i);
                 temp1 = date_Data.get(i);
@@ -206,6 +206,7 @@ public class Temp extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent a = new Intent(getActivity(), Graph_Statistics.class);
+                //getSupportFragmentManager().beginTransaction().replace(R.id.container, new Graph_Statistics.PlaceholderFragment()).commit();
                 startActivity(a);
 
 

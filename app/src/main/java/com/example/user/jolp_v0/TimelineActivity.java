@@ -89,7 +89,7 @@ public class TimelineActivity extends AppCompatActivity
         Log.d("TimelineActivity", "date_Data.size() : " + date_Data.size());
         Log.d("TimelineActivity", "step_Data.size() : " + step_Data.size());
 
-        for (int i = 0; i < date_Data.size(); ++i)
+        for (int i = 0; i < step_Data.size(); ++i)
         {
             Date date = date_Data.get(i);
             Calendar cal = Calendar.getInstance();
